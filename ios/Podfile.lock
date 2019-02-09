@@ -1,0 +1,58 @@
+PODS:
+  - GoogleMaps (3.0.2):
+    - GoogleMaps/Maps (= 3.0.2)
+  - GoogleMaps/Base (3.0.2)
+  - GoogleMaps/Maps (3.0.2):
+    - GoogleMaps/Base
+  - GooglePlacePicker (3.0.2):
+    - GoogleMaps (= 3.0.2)
+    - GooglePlaces (= 3.0.2)
+  - GooglePlaces (3.0.2):
+    - GoogleMaps/Base (= 3.0.2)
+  - React (0.58.3):
+    - React/Core (= 0.58.3)
+  - React/Core (0.58.3):
+    - yoga (= 0.58.3.React)
+  - RNGestureHandler (1.0.15):
+    - React
+  - RNVectorIcons (6.2.0):
+    - React
+  - yoga (0.58.3.React)
+
+DEPENDENCIES:
+  - GoogleMaps
+  - GooglePlacePicker
+  - GooglePlaces
+  - React (from `../node_modules/react-native`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GoogleMaps
+    - GooglePlacePicker
+    - GooglePlaces
+
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  GoogleMaps: 941cd655e009b4d8e42df19a3d749bc3fccec973
+  GooglePlacePicker: 00a74c32477edc8e01a99cf49a6bd4e64767a2b1
+  GooglePlaces: c086e0055dc5f0177d7c9d65fc77a1734f9a4825
+  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
+  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
+  RNVectorIcons: 8c52e1e8da1153613fdef44748e865c25556cb9c
+  yoga: 0885622311729a02c2bc02dca97167787a51488b
+
+PODFILE CHECKSUM: bebc6c52dec218f7db0529e2688d5962898f8fee
+
+COCOAPODS: 1.5.3
