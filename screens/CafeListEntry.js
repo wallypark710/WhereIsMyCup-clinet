@@ -3,10 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-n
 
 class CafeListEntry extends Component {
 	render(){
-		let temp = this.props.cafe.photos === undefined ? "" : this.props.cafe.photos[0].photo_reference;
-		let temp2 = this.props.cafe.photos === undefined ? "" : /https.*photos/.exec(this.props.cafe.photos[0].html_attributions[0])[0];
-		// console.log(`${temp2}/data=${temp}`)
-		console.log(this.props.handlePress)
 		return (
 			<TouchableWithoutFeedback onPress={()=>{ this.props.handlePress()}}>
 				<View style={styles.container} >
