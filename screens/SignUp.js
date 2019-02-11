@@ -18,7 +18,7 @@ class SignUp extends Component {
     if( this.state.password !== this.state.confirmPassword ){
       alert('password is not correct');
     } else {
-      axios.post(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/oauth/local/register`, { name: this.state.name, email: this.state.email, password: this.state.password })
+      axios.post(`http://13.125.24.9:3000/oauth/local/register`, { name: this.state.name, email: this.state.email, password: this.state.password })
         .then(async (result) => {
           // alert(JSON.stringify(result))
           // console.log(result.headers['x-refresh-token'])

@@ -13,6 +13,7 @@ import UserInfo from './UserInfo';
 import Saved from './Saved';
 import CafeListEntry from './CafeListEntry';
 import SuggestCafeListEntry from './SuggestCafeListEntry';
+import {Login} from '../modules/Login';
 
 class Home extends Component {
   state = {
@@ -65,65 +66,41 @@ class Home extends Component {
     this.props.navigation.navigate('CafeInfo', {lat: this.state.latitude, lng: this.state.longitude});
   }
 
-  async  handleAppState(currentAppState) {
+  async handleAppState(currentAppState) {
     console.log(currentAppState);
     this.setState({ appState: currentAppState });
 
     if( currentAppState === 'active' ){
-      //refresh token 전송.
+      //refresh token 전송. 3600000
       let currentTime = new Date().getTime();
 
-      if( (currentTime - this.state.timeOut) > 3600000 ){
+      if( (currentTime - this.state.timeOut) > 10000 ){
+        console.log('토큰 만료');
         const credentials = await Keychain.getGenericPassword();
+
         if(credentials){
-          console.log(credentials);
-          axios.get(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/oauth/access`,{
+          await axios.get(`http://13.125.24.9:3000/oauth/access`,{
             headers: {
               'x-refresh-token' : credentials.password
             }
           })
-          .then(result => {
-
-            switch(result.status){
-              case 401:
-                axios.post(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/oauth/local/login`,{
-                  email: JSON.parse(credentials.username).email,
-                  password: JSON.parse(credentials.username).pw
-                })
-                .then(result => {
-
-                  if( result.status === 200 ){
-                    const firstKeyChain = JSON.stringify({ email: JSON.parse(credentials.username).email, pw: JSON.parse(credentials.username).pw });
-                    const secondKeyChain = result.headers['x-refresh-token'];
-
-                    await Keychain.resetGenericPassword();
-                    await Keychain.setGenericPassword(firstKeyChain, secondKeyChain);
-                    await AsyncStorage.setItem('access', result.headers['x-access-token']);
-
-                  } else {
-                    console.log("auto login error");
-                  }
-                })
-                .catch( err => {console.log(err.message)} );
-                break;
-
-              case 200:
-                console.log('access token renewal success');
-                await AsyncStorage.setItem('access', result.headers['x-access-token']);
-                break;  
-            }
+          .then( async result => {
+            console.log('access token renewal success');
+            await AsyncStorage.setItem('access', result.headers['x-access-token']);
           })
-          .catch( err => {console.log(err.message)} );
+          .catch( async err => { 
+            console.log('auto login part');
+            let temp = await Login(JSON.parse(credentials.username).email, JSON.parse(credentials.username).pw);
+          });
 
-        }else{
-          console.log('credentials error');
+        } else { 
+          console.log('credentials error'); 
         }
       }
-    } else {
-      this.setState({ timeOut : new Date().getTime() })
+    } else { 
+      this.setState({ timeOut: new Date().getTime() }) 
     }
   }
-
 
   render() {
     console.log(this.state.timeOut);
@@ -250,5 +227,4 @@ const styles = StyleSheet.create({
     height: 300,
     // marginHorizontal: 20,
   },
-
 });

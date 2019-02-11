@@ -20,7 +20,7 @@ class SignIn extends Component {
   }
 
   handleGet = async () => {
-  	await axios.get(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/`)
+  	await axios.get(`http://13.125.24.9:3000/`)
   	.then( result => {
   		
   		if( result.status === 200 ){
