@@ -70,8 +70,9 @@ class Home extends Component {
     this.setState({ appState: currentAppState });
 
     if( currentAppState === 'active' ){
-      //refresh token 전송. 3600000
+      //refresh token 전송.
       let currentTime = new Date().getTime();
+
       if( (currentTime - this.state.timeOut) > 3600000 ){
         const credentials = await Keychain.getGenericPassword();
         if(credentials){
@@ -82,8 +83,35 @@ class Home extends Component {
             }
           })
           .then(result => {
-            console.log('access token renewal success');
-            await AsyncStorage.setItem('access', result.headers['x-access-token']);
+
+            switch(result.status){
+              case 401:
+                axios.post(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/oauth/local/login`,{
+                  email: JSON.parse(credentials.username).email,
+                  password: JSON.parse(credentials.username).pw
+                })
+                .then(result => {
+
+                  if( result.status === 200 ){
+                    const firstKeyChain = JSON.stringify({ email: JSON.parse(credentials.username).email, pw: JSON.parse(credentials.username).pw });
+                    const secondKeyChain = result.headers['x-refresh-token'];
+
+                    await Keychain.resetGenericPassword();
+                    await Keychain.setGenericPassword(firstKeyChain, secondKeyChain);
+                    await AsyncStorage.setItem('access', result.headers['x-access-token']);
+
+                  } else {
+                    console.log("auto login error");
+                  }
+                })
+                .catch( err => {console.log(err.message)} );
+                break;
+
+              case 200:
+                console.log('access token renewal success');
+                await AsyncStorage.setItem('access', result.headers['x-access-token']);
+                break;  
+            }
           })
           .catch( err => {console.log(err.message)} );
 
@@ -94,9 +122,6 @@ class Home extends Component {
     } else {
       this.setState({ timeOut : new Date().getTime() })
     }
-
-
-
   }
 
 
