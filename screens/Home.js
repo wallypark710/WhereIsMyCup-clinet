@@ -105,7 +105,7 @@ class Home extends Component {
   }
 
   searchSubmit(){
-    this.props.navigation.navigate('SearchResult', {target : this.state.searchKeyword});
+    this.props.navigation.navigate('SearchResult', {lat: this.state.latitude, lng: this.state.longitude, target : this.state.searchKeyword});
   }
 
   render() {

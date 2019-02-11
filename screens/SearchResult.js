@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TextInput, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import SuggestCafeListEntry from './SuggestCafeListEntry';
 
 class SearchResult extends Component {
   state={
-    searchCafeList: []
+    searchCafeList: [],
+    target: this.props.navigation.getParam('target'),
+    latitude: this.props.navigation.getParam('lat'),
+    longitude: this.props.navigation.getParam('lng'),
+
   }
 
   handleGoBack(){
@@ -12,7 +18,22 @@ class SearchResult extends Component {
   }
 
   requestSearchResult(){
+    axios.get(`http://13.125.24.9:3000/api/cafe/search/${this.state.target}`, {
+      headers: {
+        latitude: this.state.latitude,
+        longitude: this.state.longitude
+      }
+    })
+    .then( result => {
+      this.setState({searchCafeList: result});
+    })
+    .catch( err => {
+      console.log(err);
+    })
+  }
 
+  componentDidMount(){
+    this.requestSearchResult();
   }
 
   render() {
@@ -29,7 +50,12 @@ class SearchResult extends Component {
           </View>
 
 
+          <ScrollView>
+            {
+              this.state.searchCafeList.map( ele => <SuggestCafeListEntry cafe={ele} /> )
+            }
 
+          </ScrollView>
         </View>
       </SafeAreaView>
     );
