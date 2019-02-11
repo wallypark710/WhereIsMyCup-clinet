@@ -5,24 +5,6 @@ import {
 
 const { width } = Dimensions.get('window');
 
-const styles = StyleSheet.create({
-  suggest: {
-    width: width - 40,
-    height: 300,
-    marginTop: 20,
-    marginLeft: 20,
-    marginBottom: 100,
-  },
-  img: {
-    flex: 1,
-    height: null,
-    width: null,
-    resizeMode: 'cover',
-    borderWidth: 1,
-    borderColor: '#dddddd',
-  },
-});
-
 const SuggestCafeListEntry = () => (
   <View style={styles.suggest}>
     <Image source={require('../images/cafe.jpg')} style={styles.img} />
@@ -34,3 +16,28 @@ const SuggestCafeListEntry = () => (
 );
 
 export default SuggestCafeListEntry;
+
+const styles = StyleSheet.create({
+  suggest: {
+    width: width - 40,
+    height: 300,
+    marginTop: 20,
+    marginLeft: 20,
+    marginBottom: 20,
+
+    backgroundColor: 'white',
+    
+    shadowOffset: {width: 0, height: 0},
+    shadowColor:'black',
+    shadowOpacity: 0.2,
+    elevation: 1
+  },
+  img: {
+    flex: 1,
+    height: null,
+    width: null,
+    resizeMode: 'cover',
+    borderWidth: 1,
+    borderColor: '#dddddd',
+  },
+});

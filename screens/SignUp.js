@@ -61,12 +61,14 @@ class SignUp extends Component {
     return (
       <View style={styles.container}>
         <SafeAreaView style={{flex: 1}}>
-          <View style={{flex: 5, backgroundColor: 'white', justifyContent: 'flex-end'}}>
+
+          <View style={styles.scrollContainer}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
+
+          <View style={{flex: 1, backgroundColor: 'white', justifyContent: 'flex-end', marginTop: height*0.06}}>
             <Image style={styles.img} source={require('../images/LOGO.png')} />
           </View>
 
-          <View style={styles.scrollContainer}>
-            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.inputContainer}>
                 <View style={styles.input}>
                   <Icon name="ios-mail" size={20} />
@@ -127,7 +129,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   inputContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    flex:1,
+    backgroundColor: 'white',
+    paddingBottom: 220
   },
   input: {
     flexDirection: 'row',
@@ -145,8 +150,8 @@ const styles = StyleSheet.create({
 
   },
   scrollContainer: {
-    flex: 6,
-    height: 100,
+    flex: 1,
+    height: height,
     backgroundColor: "white"
   },
   btnEntry: {

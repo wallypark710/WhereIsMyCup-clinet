@@ -7,13 +7,15 @@ class CafeListEntry extends Component {
 		return (
 			<TouchableWithoutFeedback onPress={()=>{ this.props.handlePress(this.props.cafe)}}>
 				<View style={styles.container} >
+
 					<View style={{flex:2}}>
 						<Image style={styles.img} source={img} />
 					</View>
 					
-					<View style={{flex: 1, paddingLeft: 10, paddingTop: 10 }} >
+					<View style={{flex: 1, paddingLeft: 10, paddingTop: 10}} >
 						<Text> {this.props.cafe.title} </Text>
 					</View>
+
 				</View>
 			</TouchableWithoutFeedback>
 			);
@@ -27,12 +29,24 @@ const styles = StyleSheet.create({
 		height: 130,
 		width: 130,
 		marginLeft: 20,
-		borderWidth: 0.5, borderColor: '#dddddd'
+		borderWidth: 0.7, 
+    borderColor: '#dddddd',
+    marginBottom: 20,
+
+    
+    backgroundColor: 'white',
+
+    shadowOffset: {width: 0, height: 0},
+    shadowColor:'black',
+    shadowOpacity: 0.1,
+    elevation: 1
 	},
 	img: {
 		flex:1,
 		width: null,
 		height: null,
-		resizeMode: 'cover' 
+		resizeMode: 'cover',
+
+   
 	}
 })

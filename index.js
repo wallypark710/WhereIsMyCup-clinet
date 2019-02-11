@@ -7,6 +7,7 @@ import SignUp from './screens/SignUp';
 import GoogleMap from './screens/Map';
 import Home from './screens/Home';
 import CafeInfo from './screens/CafeInfo';
+import SearchResult from './screens/SearchResult';
 
 const AppNavigator = createStackNavigator({
   Welcome: {
@@ -17,10 +18,20 @@ const AppNavigator = createStackNavigator({
   },
   SignUp: {
     screen: SignUp,
+    navigationOptions: {
+      headerStyle:{
+        borderBottomWidth: 0,
+      },
+      headerTintColor: 'black',
+    },
   },
   SignIn: {
     screen: SignIn,
     navigationOptions: {
+      headerStyle:{
+        borderBottomWidth: 0,
+      },
+      headerTintColor: 'black',
     },
   },
   Home: {
@@ -34,6 +45,12 @@ const AppNavigator = createStackNavigator({
   },
   CafeInfo: {
     screen: CafeInfo,
+  },
+  SearchResult: {
+    screen: SearchResult,
+    navigationOptions: {
+      header: null,
+    },
   }
 },
 {

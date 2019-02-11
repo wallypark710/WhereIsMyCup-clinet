@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const { height, width } = Dimensions.get('window');
 class SignIn extends Component {
   static navigationOptions={
-   
+    
   }
 
   state = {

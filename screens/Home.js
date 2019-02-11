@@ -14,6 +14,7 @@ import Saved from './Saved';
 import CafeListEntry from './CafeListEntry';
 import SuggestCafeListEntry from './SuggestCafeListEntry';
 import {Login} from '../modules/Login';
+import SearchResult from './SearchResult';
 
 class Home extends Component {
   state = {
@@ -23,6 +24,7 @@ class Home extends Component {
     cafeList: [],
     appState: AppState.currentState,
     timeOut: null,
+    searchKeyword: '',
   };
 
   componentDidMount() {
@@ -102,6 +104,10 @@ class Home extends Component {
     }
   }
 
+  searchSubmit(){
+    this.props.navigation.navigate('SearchResult', {target : this.state.searchKeyword});
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -109,7 +115,7 @@ class Home extends Component {
           <View style={ styles.explore}>
             <View style={ styles.searchBarConatiner}>
               <Icon name="ios-search" size={20} />
-              <TextInput placeholder="search awesome cafe" placeholderTextColor="grey" style={styles.searchBar} />
+              <TextInput placeholder="search awesome cafe" placeholderTextColor="grey" returnKeyType="search" style={styles.searchBar} onSubmitEditing={this.searchSubmit.bind(this)} onChangeText={(searchKeyword)=>{this.setState({searchKeyword})}} />
             </View>
 
           </View>
@@ -134,6 +140,7 @@ class Home extends Component {
             </View>
 
             <SuggestCafeListEntry />
+            <SuggestCafeListEntry />
 
           </ScrollView>
 
@@ -153,10 +160,6 @@ export default createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Icon name="ios-cafe" color={tintColor} size={24} />
       ),
-      tabBarOptions: {
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-      },
       header: {
         visible: false,
       },
@@ -169,10 +172,6 @@ export default createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Icon name="ios-heart" color={tintColor} size={24} />
       ),
-      tabBarOptions: {
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-      },
     },
   },
   UserInfo: {
@@ -182,12 +181,21 @@ export default createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Icon name="ios-contact" color={tintColor} size={24} />
       ),
-      tabBarOptions: {
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-      },
     },
   },
+},{
+  tabBarOptions: {
+    activeTintColor: 'black',
+    inactiveTintColor: 'gray',
+    style: {
+      backgroundColor: 'white',
+      borderTopWidth: 0,
+      shadowOffset: {width: 5, height: 3},
+      shadowColor:'black',
+      shadowOpacity: 0.5,
+      elevation: 5
+    }
+  }
 });
 
 const styles = StyleSheet.create({
