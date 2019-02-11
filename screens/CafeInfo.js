@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, SafeAreaView } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
 
@@ -18,6 +18,7 @@ class CafeInfo extends Component {
     console.log(this.props.navigation.state.params);
     
     return (
+      <SafeAreaView style={{ flex: 1 }}>
       <View style={ styles.container }>
         <Image source={img} style={ styles.img } />   
         
@@ -53,6 +54,7 @@ class CafeInfo extends Component {
         </View>
       
       </View>
+      </SafeAreaView>
     );
   }
 }
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   },
   view: {
     flex:1, 
-    paddingVertical: 140, 
+    paddingVertical: 115, 
     backgroundColor: 'green', 
     opacity: 0,
   },
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   },
   bodyContents: {
     width:width-40,
-    height: 300,
+    height: 230,
     marginBottom:30,
     backgroundColor: 'white',
     marginTop: 20,

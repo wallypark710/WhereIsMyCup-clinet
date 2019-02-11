@@ -125,7 +125,7 @@ class Home extends Component {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
               {
-  								this.state.cafeList.map((ele, idx) => <CafeListEntry key={idx} cafe={ele} handlePress={this.goToScreen.bind(this)} />)
+  								this.state.cafeList.slice(0,8).map((ele, idx) => <CafeListEntry key={idx} cafe={ele} handlePress={this.goToScreen.bind(this)} />)
   						}
             </ScrollView>
 
