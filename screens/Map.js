@@ -18,13 +18,15 @@ class Map extends Component {
 						}}
 						style = { styles.container }
 					>
-						{ this.props.cafeList.map( (ele,idx) => (
-							<Marker key={idx} coordinate={{
-									latitude: ele.geometry.location.lat,
-									longitude: ele.geometry.location.lng
+						{ this.props.cafeList.map( (ele,idx) => {
+              console.log('title : ',ele.title,'lat : ',ele.location.lat,' lng : ', ele.location.lng);
+							return (<Marker key={idx} coordinate={{
+									latitude: ele.location.lat,
+									longitude: ele.location.lng
 								}}
-								/>
-							))
+                onPress={()=>{console.log(ele.title)}}
+								/>)
+							})
 						}
 					</MapView>
 				</View>

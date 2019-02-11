@@ -3,15 +3,16 @@ import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-n
 
 class CafeListEntry extends Component {
 	render(){
+    const img = this.props.cafe.images[0] ? {uri: this.props.cafe.images[0] } : require('../images/cafe.jpg');
 		return (
-			<TouchableWithoutFeedback onPress={()=>{ this.props.handlePress()}}>
+			<TouchableWithoutFeedback onPress={()=>{ this.props.handlePress(this.props.cafe)}}>
 				<View style={styles.container} >
 					<View style={{flex:2}}>
-						<Image style={styles.img} source={require('../images/cafe.jpg')} />
+						<Image style={styles.img} source={img} />
 					</View>
 					
 					<View style={{flex: 1, paddingLeft: 10, paddingTop: 10 }} >
-						<Text> {this.props.cafe.name} </Text>
+						<Text> {this.props.cafe.title} </Text>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -19,7 +20,7 @@ class CafeListEntry extends Component {
 	}
 }
 
-export default CafeListEntry;
+export default CafeListEntry; 
 
 const styles = StyleSheet.create({
 	container: {

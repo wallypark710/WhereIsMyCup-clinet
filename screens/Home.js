@@ -30,21 +30,19 @@ class Home extends Component {
     this.getCurrentPositionCafeList();
   }
 
-  getUrlWithParameters(lat, long, radius, type, API) {
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?`;
-    const location = `location=${lat},${long}&radius=${radius}`;
-    const typeData = `&types=${type}`;
-    const key = `&key=${API}`;
-    return `${url}${location}${typeData}${key}`;
-  }
-
-  getPlaces() {
-    const url = this.getUrlWithParameters(this.state.latitude, this.state.longitude, 500, 'cafe', KEY);
-    axios.get(url)
-      .then((response) => {
-        this.setState({ cafeList: response.data.results });
-      })
-      .catch(err => console.log(err));
+  async getPlaces() {
+    axios.post(`http://13.125.24.9:3000/api/cafe/curLoc`,{
+      headers: {
+        'x-access-token': await AsyncStorage.getItem('access')
+      },
+      latitude: this.state.latitude,
+      longitude: this.state.longitude
+    })
+    .then((response) => {
+      console.log(response);
+      this.setState({ cafeList: response.data});
+    })
+    .catch(err => console.log(err));
   }
 
   getCurrentPositionCafeList() {
@@ -62,48 +60,49 @@ class Home extends Component {
     );
   }
 
-  goToScreen() {
-    this.props.navigation.navigate('CafeInfo', {lat: this.state.latitude, lng: this.state.longitude});
+  goToScreen(cafe) {
+    console.log(cafe);
+    this.props.navigation.navigate('CafeInfo', {lat: this.state.latitude, lng: this.state.longitude, cafe: cafe});
   }
 
   async handleAppState(currentAppState) {
     console.log(currentAppState);
     this.setState({ appState: currentAppState });
 
-    if( currentAppState === 'active' ){
+    if (currentAppState === 'active') {
       //refresh token 전송. 3600000
       let currentTime = new Date().getTime();
 
-      if( (currentTime - this.state.timeOut) > 10000 ){
+      if ((currentTime - this.state.timeOut) > 10000) {
         console.log('토큰 만료');
         const credentials = await Keychain.getGenericPassword();
 
-        if(credentials){
+        if (credentials) {
           await axios.get(`http://13.125.24.9:3000/oauth/access`,{
             headers: {
-              'x-refresh-token' : credentials.password
-            }
+              'x-refresh-token' : credentials.password,
+            },
           })
-          .then( async result => {
-            console.log('access token renewal success');
-            await AsyncStorage.setItem('access', result.headers['x-access-token']);
-          })
-          .catch( async err => { 
-            console.log('auto login part');
-            let temp = await Login(JSON.parse(credentials.username).email, JSON.parse(credentials.username).pw);
-          });
-
-        } else { 
-          console.log('credentials error'); 
+            .then(async (result) => {
+              console.log('access token renewal success');
+              await AsyncStorage.setItem('access', result.headers['x-access-token']);
+            })
+            .catch(async () => {
+              console.log('auto login part');
+              const email = JSON.parse(credentials.username).email;
+              const pw = JSON.parse(credentials.username).pw;
+              const temp = await Login(email , pw);
+            });
+        } else {
+          console.log('credentials error');
         }
       }
-    } else { 
-      this.setState({ timeOut: new Date().getTime() }) 
+    } else {
+      this.setState({ timeOut: new Date().getTime() });
     }
   }
 
   render() {
-    console.log(this.state.timeOut);
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={ styles.container}>

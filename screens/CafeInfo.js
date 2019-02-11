@@ -10,14 +10,16 @@ class CafeInfo extends Component {
   static navigationOptions={
     header: null,
   }
+  
 
   render(){
+    const props = this.props.navigation.state.params;
+    const img = props.cafe.images[0] ? {uri: props.cafe.images[0] } : require('../images/cafe.jpg');
     console.log(this.props.navigation.state.params);
-    const position = this.props.navigation.state.params;
     
     return (
       <View style={ styles.container }>
-        <Image source={ require('../images/cafe.jpg') } style={ styles.img } />   
+        <Image source={img} style={ styles.img } />   
         
         <View style={styles.scrollContainer}>
           <ScrollView style={{flex:1}} bounces={false} >
@@ -27,8 +29,8 @@ class CafeInfo extends Component {
             <View style={ styles.infoContainer }>
               <View style={{flex: 1}}>
                 <View style={styles.infoTitle}>
-                  <Text style={{fontSize: 35, fontWeight: '400', backgroundColor: 'white',paddingLeft: 20, }}>WALLi's Cafe</Text>
-                  <Text style={{paddingLeft: 20}}>Seoul Mapo-gu, KR</Text>
+                  <Text style={{fontSize: 35, fontWeight: '400', backgroundColor: 'white',paddingLeft: 20, }}>{props.cafe.title}</Text>
+                  <Text style={{paddingLeft: 20}}>{props.cafe.addresses[0]}</Text>
                 </View>
 
                 <View style={styles.infoBody}>
@@ -42,7 +44,7 @@ class CafeInfo extends Component {
             <View style={ styles.mapContainer }>
               
               <View style={styles.map}>
-                <GoogleMap cafeList={[]} currentLat={position.lat} currentLng={position.lng}/>
+                <GoogleMap cafeList={[props.cafe]} currentLat={props.lat} currentLng={props.lng}/>
               </View>
 
             </View>
