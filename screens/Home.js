@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, SafeAreaView, TextInput, ScrollView,
+  View, Text, StyleSheet, SafeAreaView, TextInput, ScrollView, AppState, AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
 import axios from 'axios';
+import * as Keychain from 'react-native-keychain';
 import { KEY } from '../config/config.js';
 
 import GoogleMap from './Map';
@@ -19,14 +20,12 @@ class Home extends Component {
     longitude: -104.9903,
     error: null,
     cafeList: [],
-  }
-
-  goToScreen(){
-    this.props.navigation.navigate('CafeInfo', {lat: this.state.latitude, lng: this.state.longitude});
-  }
+    appState: AppState.currentState,
+    timeOut: null,
+  };
 
   componentDidMount() {
-
+    AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
   }
 
@@ -62,8 +61,47 @@ class Home extends Component {
     );
   }
 
+  goToScreen() {
+    this.props.navigation.navigate('CafeInfo', {lat: this.state.latitude, lng: this.state.longitude});
+  }
+
+  async  handleAppState(currentAppState) {
+    console.log(currentAppState);
+    this.setState({ appState: currentAppState });
+
+    if( currentAppState === 'active' ){
+      //refresh token 전송. 3600000
+      let currentTime = new Date().getTime();
+      if( (currentTime - this.state.timeOut) > 3600000 ){
+        const credentials = await Keychain.getGenericPassword();
+        if(credentials){
+          console.log(credentials);
+          axios.get(`http://ec2-13-125-24-9.ap-northeast-2.compute.amazonaws.com:3000/oauth/access`,{
+            headers: {
+              'x-refresh-token' : credentials.password
+            }
+          })
+          .then(result => {
+            console.log('access token renewal success');
+            await AsyncStorage.setItem('access', result.headers['x-access-token']);
+          })
+          .catch( err => {console.log(err.message)} );
+
+        }else{
+          console.log('credentials error');
+        }
+      }
+    } else {
+      this.setState({ timeOut : new Date().getTime() })
+    }
+
+
+
+  }
+
 
   render() {
+    console.log(this.state.timeOut);
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={ styles.container}>

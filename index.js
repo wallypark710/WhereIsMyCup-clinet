@@ -15,7 +15,9 @@ const AppNavigator = createStackNavigator({
       header: null,
     },
   },
-  SignUp: SignUp,
+  SignUp: {
+    screen: SignUp,
+  },
   SignIn: {
     screen: SignIn,
     navigationOptions: {
@@ -27,8 +29,12 @@ const AppNavigator = createStackNavigator({
       header: null,
     },
   },
-  GoogleMap: GoogleMap,
-  CafeInfo: CafeInfo
+  GoogleMap: {
+    screen: GoogleMap,
+  },
+  CafeInfo: {
+    screen: CafeInfo,
+  }
 },
 {
   initialRouteName: 'Welcome',
