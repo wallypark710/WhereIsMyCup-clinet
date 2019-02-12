@@ -9,53 +9,55 @@ import Home from './screens/Home';
 import CafeInfo from './screens/CafeInfo';
 import SearchResult from './screens/SearchResult';
 
-const AppNavigator = createStackNavigator({
-  Welcome: {
-    screen: Welcome,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      headerStyle:{
-        borderBottomWidth: 0,
+const AppNavigator = createStackNavigator(
+  {
+    Welcome: {
+      screen: Welcome,
+      navigationOptions: {
+        header: null,
       },
-      headerTintColor: 'black',
     },
-  },
-  SignIn: {
-    screen: SignIn,
-    navigationOptions: {
-      headerStyle:{
-        borderBottomWidth: 0,
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+        headerTintColor: 'black',
       },
-      headerTintColor: 'black',
+    },
+    SignIn: {
+      screen: SignIn,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+        headerTintColor: 'black',
+      },
+    },
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    GoogleMap: {
+      screen: GoogleMap,
+    },
+    CafeInfo: {
+      screen: CafeInfo,
+    },
+    SearchResult: {
+      screen: SearchResult,
+      navigationOptions: {
+        header: null,
+      },
     },
   },
-  Home: {
-    screen: Home,
-    navigationOptions: {
-      header: null,
-    },
+  {
+    initialRouteName: 'Welcome',
   },
-  GoogleMap: {
-    screen: GoogleMap,
-  },
-  CafeInfo: {
-    screen: CafeInfo,
-  },
-  SearchResult: {
-    screen: SearchResult,
-    navigationOptions: {
-      header: null,
-    },
-  }
-},
-{
-  initialRouteName: 'Welcome',
-});
+);
 
 const AppContainer = createAppContainer(AppNavigator);
 
