@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Button, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, TextInput, TouchableOpacity, Dimensions, AsyncStorage } from 'react-native';
 import axios from 'axios';
+import { Login } from '../modules/Login';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 const { height, width } = Dimensions.get('window');
@@ -20,14 +21,16 @@ class SignIn extends Component {
   }
 
   handleGet = async () => {
-  	await axios.get(`http://13.125.24.9:3000/`)
-  	.then( result => {
-  		
-  		if( result.status === 200 ){
-  			this.setState({
-  				login : true
-  			})
-  		}
+  	await axios.post(`http://13.125.24.9:3000/oauth/local/login`,{
+      email: this.state.email,
+      password: this.state.password
+    })
+  	.then( async result => {
+			this.setState({
+				login : true
+			})
+
+      await Login(this.state.email , this.state.password);
   	})
   	.catch( err => alert("err") );
 

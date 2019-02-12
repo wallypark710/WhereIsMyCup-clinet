@@ -45,7 +45,7 @@ class CafeInfo extends Component {
             <View style={ styles.mapContainer }>
               
               <View style={styles.map}>
-                <GoogleMap cafeList={[props.cafe]} currentLat={props.lat} currentLng={props.lng}/>
+                <GoogleMap cafeList={[props.cafe]} currentLat={props.cafe.location.lat} currentLng={props.cafe.location.lng}/>
               </View>
 
             </View>

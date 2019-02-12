@@ -13,7 +13,8 @@ class CafeListEntry extends Component {
 					</View>
 					
 					<View style={{flex: 1, paddingLeft: 10, paddingTop: 10}} >
-						<Text> {this.props.cafe.title} </Text>
+						<Text style={{fontWeight:'bold'}}> {this.props.cafe.title} </Text>
+            <Text> {this.props.cafe.distance}m </Text>
 					</View>
 
 				</View>

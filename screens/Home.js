@@ -22,6 +22,7 @@ class Home extends Component {
     longitude: -104.9903,
     error: null,
     cafeList: [],
+    suggestCafeList: [],
     appState: AppState.currentState,
     timeOut: null,
     searchKeyword: '',
@@ -33,18 +34,20 @@ class Home extends Component {
   }
 
   async getPlaces() {
-    axios.post(`http://13.125.24.9:3000/api/cafe/curLoc`,{
+    axios.get(`http://13.125.24.9:3000/api/cafe/curLoc`,{
       headers: {
-        'x-access-token': await AsyncStorage.getItem('access')
+        'x-access-token': await AsyncStorage.getItem('access'),
+        latitude: this.state.latitude,
+        longitude: this.state.longitude
       },
-      latitude: this.state.latitude,
-      longitude: this.state.longitude
     })
-    .then((response) => {
-      console.log(response);
-      this.setState({ cafeList: response.data});
-    })
-    .catch(err => console.log(err));
+      .then((response) => {
+        console.log(response);
+        this.setState({ cafeList: response.data});
+        //fake data
+        this.setState({ suggestCafeList: response.data.slice(0,4) });
+      })
+      .catch(err => console.log(err));
   }
 
   getCurrentPositionCafeList() {
@@ -80,7 +83,7 @@ class Home extends Component {
         const credentials = await Keychain.getGenericPassword();
 
         if (credentials) {
-          await axios.get(`http://13.125.24.9:3000/oauth/access`,{
+          await axios.get(`http://13.125.24.9:3000/oauth/access`, {
             headers: {
               'x-refresh-token' : credentials.password,
             },
@@ -105,7 +108,8 @@ class Home extends Component {
   }
 
   searchSubmit(){
-    this.props.navigation.navigate('SearchResult', {lat: this.state.latitude, lng: this.state.longitude, target : this.state.searchKeyword});
+    this.props.navigation.navigate('SearchResult', {lat: this.state.latitude, lng: this.state.longitude, target : this.state.searchKeyword, handlePress: this.goToScreen.bind(this)});
+    this.setState({searchKeyword: ''});
   }
 
   render() {
@@ -114,8 +118,8 @@ class Home extends Component {
         <View style={ styles.container}>
           <View style={ styles.explore}>
             <View style={ styles.searchBarConatiner}>
-              <Icon name="ios-search" size={20} />
-              <TextInput placeholder="search awesome cafe" placeholderTextColor="grey" returnKeyType="search" style={styles.searchBar} onSubmitEditing={this.searchSubmit.bind(this)} onChangeText={(searchKeyword)=>{this.setState({searchKeyword})}} />
+              <Icon name="ios-search" size={20} onPress={this.searchSubmit.bind(this)} />
+              <TextInput value={this.state.searchKeyword} placeholder="search awesome cafe" placeholderTextColor="grey" returnKeyType="search" style={styles.searchBar} onSubmitEditing={this.searchSubmit.bind(this)} onChangeText={(searchKeyword)=>{this.setState({searchKeyword})}} />
             </View>
 
           </View>
@@ -139,8 +143,9 @@ class Home extends Component {
               <Text style={{ fontSize: 25, fontWeight: '700' }}>Just for You</Text>
             </View>
 
-            <SuggestCafeListEntry />
-            <SuggestCafeListEntry />
+            {
+              this.state.suggestCafeList.map( (ele, idx) => <SuggestCafeListEntry key={idx} cafe={ele} handlePress={this.goToScreen.bind(this)} /> )
+            }
 
           </ScrollView>
 

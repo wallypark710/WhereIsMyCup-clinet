@@ -10,7 +10,7 @@ export const Login = async function(email, password){
     });
 
     if( result.status === 200 ){
-      console.log('auto login success');
+      console.log('login success');
       const firstKeyChain = JSON.stringify({ email: email, pw: password });
       const secondKeyChain = result.headers['x-refresh-token'];
 
@@ -22,7 +22,7 @@ export const Login = async function(email, password){
 
       return 1;
     } else {
-      console.log("auto login error");
+      console.log("login error");
       return 0;
     }
     
