@@ -16,17 +16,17 @@ const { height, width } = Dimensions.get('window');
 class Feedback extends Component {
   state = {
     item: [
-      ['넉넉한 공간', 'space_L'],
-      ['아담한 공간', 'space_S'],
+      ['넉넉한 공간', 'spaceL'],
+      ['아담한 공간', 'spaceS'],
       ['전문적', 'professional'],
-      ['다양한 메뉴', 'menu_variety'],
-      ['심플한 메뉴', 'menu_simple'],
+      ['다양한 메뉴', 'menuVariety'],
+      ['심플한 메뉴', 'menuSimple'],
       ['친절해요', 'kindness'],
-      ['작업하기 좋은 공간', 'working_space'],
-      ['다양한 디저트', 'dessert_variety'],
-      ['디카페인 메뉴', 'non_caffeine'],
-      ['조용한 음악', 'calm_music'],
-      ['신나는 음악', 'hip_music'],
+      ['작업하기 좋은 공간', 'workingSpace'],
+      ['다양한 디저트', 'dessertVariety'],
+      ['디카페인 메뉴', 'nonCaffeine'],
+      ['조용한 음악', 'calmMusic'],
+      ['신나는 음악', 'hipMusic'],
     ],
 
     checkTag: {
@@ -53,13 +53,18 @@ class Feedback extends Component {
       }
     }
 
-    axios
-      .post(`http://13.125.24.9:3000/api/cafe/feedback/${id}`, {
-        headers: {
-          'x-access-token': await AsyncStorage.getItem('access'),
+    const token = await AsyncStorage.getItem('access');
+
+    await axios
+      .post(
+        `http://13.125.24.9:3000/api/cafe/feedback/${id}`,
+        {
+          feedback: feedback,
         },
-        feedback: feedback,
-      })
+        {
+          headers: { 'x-access-token': token },
+        },
+      )
       .then((result) => {
         console.log(result);
       })
@@ -71,7 +76,6 @@ class Feedback extends Component {
   }
 
   renderRowItem(itemData) {
-    console.log(itemData);
     return (
       <View>
         <TouchableOpacity
@@ -178,8 +182,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: width * 0.3,
     backgroundColor: 'white',
-    marginTop: 40,
+    marginTop: 20,
     margin: 30,
+    marginLeft: width / 2 - 50,
   },
   btnEntry: {
     paddingVertical: 10,

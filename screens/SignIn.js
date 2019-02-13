@@ -30,6 +30,7 @@ class SignIn extends Component {
   };
 
   handleGet = async () => {
+    console.log(this.state.email, this.state.password);
     await axios
       .post(`http://13.125.24.9:3000/oauth/local/login`, {
         email: this.state.email,
