@@ -12,8 +12,9 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { Login } from '../modules/Login';
-
 import Icon from 'react-native-vector-icons/Ionicons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 const { height, width } = Dimensions.get('window');
 class SignIn extends Component {
   static navigationOptions = {};
@@ -51,65 +52,72 @@ class SignIn extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View
-          style={{
-            flex: 3,
-            backgroundColor: 'white',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Image style={styles.img} source={require('../images/LOGO.png')} />
-        </View>
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+        extraScrollHeight={140}
+      >
+        <View style={styles.container}>
+          <View
+            style={{
+              flex: 3,
+              backgroundColor: 'white',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Image style={styles.img} source={require('../images/LOGO.png')} />
+          </View>
 
-        <View style={{ flex: 4, justifyContent: 'flex-start' }}>
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <Icon name="ios-mail" size={20} />
-              <TextInput
-                style={styles.inputElement}
-                placeholder="input your email"
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={(email) => {
-                  this.setState({ email });
-                }}
-              />
-            </View>
+          <View style={{ flex: 4, justifyContent: 'flex-start' }}>
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <Icon name="ios-mail" size={20} />
+                <TextInput
+                  style={styles.inputElement}
+                  placeholder="input your email"
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onChangeText={(email) => {
+                    this.setState({ email });
+                  }}
+                />
+              </View>
 
-            <View style={styles.input}>
-              <Icon
-                name="ios-lock"
-                size={20}
-                style={{ paddingRight: 4, paddingLeft: 4 }}
-              />
-              <TextInput
-                style={styles.inputElement}
-                placeholder="input your password"
-                secureTextEntry={true}
-                onChangeText={(password) => {
-                  this.setState({ password });
-                }}
-              />
-            </View>
+              <View style={styles.input}>
+                <Icon
+                  name="ios-lock"
+                  size={20}
+                  style={{ paddingRight: 4, paddingLeft: 4 }}
+                />
+                <TextInput
+                  style={styles.inputElement}
+                  placeholder="input your password"
+                  secureTextEntry={true}
+                  onChangeText={(password) => {
+                    this.setState({ password });
+                  }}
+                />
+              </View>
 
-            <View style={styles.btn}>
-              <TouchableOpacity
-                style={styles.btnEntry}
-                onPress={() => {
-                  this.handleGet();
-                }}
-              >
-                <Text
-                  style={{ textAlign: 'center', color: 'rgb(150,150,150)' }}
+              <View style={styles.btn}>
+                <TouchableOpacity
+                  style={styles.btnEntry}
+                  onPress={() => {
+                    this.handleGet();
+                  }}
                 >
-                  Login
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{ textAlign: 'center', color: 'rgb(150,150,150)' }}
+                  >
+                    Login
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
