@@ -175,8 +175,7 @@ class SignUp extends Component {
                     <Text
                       style={{ textAlign: 'center', color: 'rgb(150,150,150)' }}
                     >
-                      {' '}
-                      Regist{' '}
+                      Regist
                     </Text>
                   </TouchableOpacity>
                 </View>

@@ -28,8 +28,7 @@ class SuggestCafeListEntry extends Component {
             style={{ borderWidth: 0.5, borderColor: '#dddddd', height: 80 }}
           >
             <Text style={{ fontSize: 24, fontWeight: '500', margin: 5 }}>
-              {' '}
-              {this.props.cafe.title}{' '}
+              {this.props.cafe.title}
             </Text>
             <Text style={{ margin: 5, marginLeft: 10 }}>
               {this.props.cafe.distance}m

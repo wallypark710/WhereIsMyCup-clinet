@@ -4,10 +4,12 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Welcome from './screens/Welcome';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
-import GoogleMap from './screens/Map';
 import Home from './screens/Home';
-import CafeInfo from './screens/CafeInfo';
 import SearchResult from './screens/SearchResult';
+
+import GoogleMap from './screens/Map';
+import CafeInfo from './screens/CafeInfo';
+import Feedback from './screens/Feedback';
 
 const AppNavigator = createStackNavigator(
   {
@@ -17,6 +19,7 @@ const AppNavigator = createStackNavigator(
         header: null,
       },
     },
+
     SignUp: {
       screen: SignUp,
       navigationOptions: {
@@ -26,6 +29,7 @@ const AppNavigator = createStackNavigator(
         headerTintColor: 'black',
       },
     },
+
     SignIn: {
       screen: SignIn,
       navigationOptions: {
@@ -35,27 +39,36 @@ const AppNavigator = createStackNavigator(
         headerTintColor: 'black',
       },
     },
+
     Home: {
       screen: Home,
       navigationOptions: {
         header: null,
       },
     },
+
     GoogleMap: {
       screen: GoogleMap,
     },
+
     CafeInfo: {
       screen: CafeInfo,
     },
+
     SearchResult: {
       screen: SearchResult,
       navigationOptions: {
         header: null,
       },
     },
+
+    Feedback: {
+      screen: Feedback,
+      navigationOptions: {},
+    },
   },
   {
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Feedback',
   },
 );
 

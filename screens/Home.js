@@ -13,7 +13,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
-import { KEY } from '../config/config.js';
 
 import GoogleMap from './Map';
 import UserInfo from './UserInfo';

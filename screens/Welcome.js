@@ -17,24 +17,12 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.contains}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'flex-end',
-          }}
-        >
+        <View style={styles.imgContainer}>
           <Image style={styles.img} source={require('../images/LOGO.png')} />
         </View>
 
         <View style={styles.subContain}>
-          <View
-            style={{
-              width: width * 0.3,
-              backgroundColor: 'white',
-              marginLeft: width / 2 - width * 0.15,
-            }}
-          >
+          <View style={styles.btnContainer}>
             <TouchableOpacity
               style={styles.btnEntry}
               onPress={() => {
@@ -66,6 +54,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  imgContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'flex-end',
+  },
   img: {
     marginLeft: 20,
     width: width - 40,
@@ -80,12 +73,15 @@ const styles = StyleSheet.create({
     width: width,
     backgroundColor: 'white',
   },
+  btnContainer: {
+    width: width * 0.3,
+    backgroundColor: 'white',
+    marginLeft: width / 2 - width * 0.15,
+  },
   btnEntry: {
-    // marginHorizontal: 40,
     marginTop: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    // justifyContent: "center",
     borderWidth: 2,
     borderColor: 'rgb(180,180,180)',
   },

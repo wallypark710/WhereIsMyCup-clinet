@@ -7,6 +7,8 @@ import {
   ScrollView,
   Dimensions,
   SafeAreaView,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
@@ -17,6 +19,10 @@ class CafeInfo extends Component {
   static navigationOptions = {
     header: null,
   };
+
+  goToScreen() {
+    this.props.navigation.navigate('Feedback');
+  }
 
   render() {
     const props = this.props.navigation.state.params;
@@ -36,20 +42,46 @@ class CafeInfo extends Component {
 
               <View style={styles.infoContainer}>
                 <View style={{ flex: 1 }}>
+                  {/**/}
                   <View style={styles.infoTitle}>
-                    <Text
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 35,
+                          fontWeight: '400',
+                          backgroundColor: 'white',
+                          paddingLeft: 20,
+                        }}
+                      >
+                        {props.cafe.title}
+                      </Text>
+                      <Text style={{ paddingLeft: 20 }}>
+                        {props.cafe.addresses[0]}
+                      </Text>
+                    </View>
+
+                    <TouchableOpacity
                       style={{
-                        fontSize: 35,
-                        fontWeight: '400',
-                        backgroundColor: 'white',
-                        paddingLeft: 20,
+                        height: 35,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 20,
+                        borderWidth: 2,
+                        borderColor: 'rgb(180,180,180)',
+                        marginRight: 20,
                       }}
+                      onPress={this.goToScreen.bind(this)}
                     >
-                      {props.cafe.title}
-                    </Text>
-                    <Text style={{ paddingLeft: 20 }}>
-                      {props.cafe.addresses[0]}
-                    </Text>
+                      <Text
+                        style={{
+                          justifyContent: 'center',
+                          color: 'rgb(150,150,150)',
+                          paddingHorizontal: 15,
+                        }}
+                      >
+                        어떠셨나요?
+                      </Text>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={styles.infoBody}>
@@ -102,6 +134,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   infoBody: {
     flex: 2,
