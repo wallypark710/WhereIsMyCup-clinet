@@ -21,7 +21,9 @@ class CafeInfo extends Component {
   };
 
   goToScreen() {
-    this.props.navigation.navigate('Feedback');
+    this.props.navigation.navigate('Feedback', {
+      cafe: this.props.navigation.state.params.cafe,
+    });
   }
 
   render() {
