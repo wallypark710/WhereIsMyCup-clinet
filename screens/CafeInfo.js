@@ -10,6 +10,7 @@ import {
   Button,
   TouchableOpacity,
   Linking,
+  FlatList,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
@@ -33,6 +34,28 @@ class CafeInfo extends Component {
     this.props.navigation.navigate('Feedback', {
       cafe: this.props.navigation.state.params.cafe,
     });
+  }
+
+  renderTag(itemData) {
+    return (
+      <View
+        style={{
+          margin: 5,
+          marginLeft: 20,
+          margin: 7,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: '700',
+            color: 'black',
+          }}
+        >
+          #{itemData.item}
+        </Text>
+      </View>
+    );
   }
 
   renderOpeningHours() {
@@ -167,6 +190,18 @@ class CafeInfo extends Component {
                       </Text>
                     </TouchableOpacity>
                   </View>
+
+                  {this.state.top3Tags.length !== 0 ? (
+                    <FlatList
+                      data={this.state.top3Tags}
+                      numColumns={2}
+                      keyExtractor={this._keyExtractor}
+                      renderItem={this.renderTag.bind(this)}
+                      style={{ width: width, backgroundColor: 'white' }}
+                    />
+                  ) : (
+                    <Text style={{ backgroundColor: 'white' }} />
+                  )}
 
                   <View style={styles.infoBody}>
                     <View style={styles.bodyContents}>
