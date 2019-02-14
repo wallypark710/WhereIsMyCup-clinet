@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   AsyncStorage,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
@@ -14,14 +15,16 @@ import SuggestCafeListEntry from './SuggestCafeListEntry';
 
 class SearchResult extends Component {
   state = {
-    searchCafeList: [],
+    cafeList: this.props.navigation.getParam('list') || [],
     target: this.props.navigation.getParam('target'),
     latitude: this.props.navigation.getParam('lat'),
     longitude: this.props.navigation.getParam('lng'),
     newSearchKeyword: '',
+    end: 5,
   };
 
   handleGoBack() {
+    this.setState({ cafeList: [] });
     this.props.navigation.goBack();
   }
 
@@ -36,7 +39,10 @@ class SearchResult extends Component {
       })
       .then((result) => {
         console.log(this.state.target);
-        this.setState({ searchCafeList: result.data });
+        this.setState({
+          cafeList: result.data,
+          viewCafeList: result.data.slice(0, 5),
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -44,25 +50,14 @@ class SearchResult extends Component {
   }
 
   componentDidMount() {
-    this.requestSearchResult();
+    if (this.state.target) {
+      this.requestSearchResult();
+    }
   }
 
   render() {
     const props = this.props.navigation.getParam('target');
-    const result =
-      this.state.searchCafeList.length !== undefined ? (
-        this.state.searchCafeList
-          .slice(0, 10)
-          .map((ele, idx) => (
-            <SuggestCafeListEntry
-              key={idx}
-              cafe={ele}
-              handlePress={this.props.navigation.getParam('handlePress')}
-            />
-          ))
-      ) : (
-        <Text>Loading</Text>
-      );
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
@@ -85,7 +80,19 @@ class SearchResult extends Component {
               />
             </View>
           </View>
-          <ScrollView>{result}</ScrollView>
+          <ScrollView>
+            <FlatList
+              data={this.state.cafeList}
+              numColumns={1}
+              keyExtractor={this._keyExtractor}
+              renderItem={(itemData) => (
+                <SuggestCafeListEntry
+                  cafe={itemData.item}
+                  handlePress={this.props.navigation.getParam('handlePress')}
+                />
+              )}
+            />
+          </ScrollView>
         </View>
       </SafeAreaView>
     );

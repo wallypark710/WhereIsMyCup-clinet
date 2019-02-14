@@ -8,6 +8,7 @@ import {
   ScrollView,
   AppState,
   AsyncStorage,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
@@ -49,10 +50,11 @@ class Home extends Component {
         },
       })
       .then((response) => {
-        console.log(response);
-        this.setState({ cafeList: response.data });
-        //fake data
-        this.setState({ suggestCafeList: response.data.slice(0, 4) });
+        console.log(response.data.cafeAround, response.data.recommendations);
+        this.setState({
+          cafeList: response.data.cafeAround,
+          suggestCafeList: response.data.recommendations,
+        });
       })
       .catch((err) => console.log(err));
   }
@@ -122,12 +124,13 @@ class Home extends Component {
     }
   }
 
-  searchSubmit() {
+  searchSubmit(list) {
     this.props.navigation.navigate('SearchResult', {
       lat: this.state.latitude,
       lng: this.state.longitude,
       target: this.state.searchKeyword,
       handlePress: this.goToScreen.bind(this),
+      list: list,
     });
     this.setState({ searchKeyword: '' });
   }
@@ -184,6 +187,41 @@ class Home extends Component {
                   handlePress={this.goToScreen.bind(this)}
                 />
               ))}
+
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.searchSubmit(this.state.cafeList);
+                }}
+              >
+                <View
+                  style={{
+                    height: 130,
+                    width: 130,
+                    marginLeft: 20,
+                    marginBottom: 20,
+                    backgroundColor: 'white',
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingLeft: 10,
+                      paddingTop: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        flex: 1,
+                        fontWeight: 'bold',
+                        paddingTop: 50,
+                        height: 110,
+                      }}
+                    >
+                      See all List
+                    </Text>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
             </ScrollView>
 
             <View style={{ marginLeft: 20 }}>

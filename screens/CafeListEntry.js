@@ -23,10 +23,15 @@ class CafeListEntry extends Component {
             <Image style={styles.img} source={img} />
           </View>
 
-          <View style={{ flex: 1, paddingLeft: 10, paddingTop: 10 }}>
-            <Text style={{ fontWeight: 'bold' }}>
-              {' '}
-              {this.props.cafe.title}{' '}
+          <View
+            style={{
+              flex: 1,
+              paddingLeft: 10,
+              paddingTop: 10,
+            }}
+          >
+            <Text numberOfLines={1} style={{ fontWeight: 'bold' }}>
+              {this.props.cafe.title}
             </Text>
             <Text> {this.props.cafe.distance}m </Text>
           </View>

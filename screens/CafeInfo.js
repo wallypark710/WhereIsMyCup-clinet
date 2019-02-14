@@ -11,10 +11,11 @@ import {
   TouchableOpacity,
   Linking,
   FlatList,
+  AsyncStorage,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
-
+import axios from 'axios';
 const { height, width } = Dimensions.get('window');
 
 class CafeInfo extends Component {
@@ -131,6 +132,20 @@ class CafeInfo extends Component {
     });
   }
 
+  async handleSaved() {
+    axios.post(
+      'http://13.125.24.9:3000/api/users/favorites',
+      {
+        cafeId: this.props.navigation.state.params.cafe._id,
+      },
+      {
+        headers: {
+          'x-access-token': await AsyncStorage.getItem('access'),
+        },
+      },
+    );
+  }
+
   render() {
     const props = this.props.navigation.state.params;
     const img = props.cafe.images[0]
@@ -151,7 +166,7 @@ class CafeInfo extends Component {
                 <View style={{ flex: 1 }}>
                   {/**/}
                   <View style={styles.infoTitle}>
-                    <View>
+                    <View style={{ width: width * 0.7 }}>
                       <Text
                         style={{
                           fontSize: 35,
@@ -167,28 +182,53 @@ class CafeInfo extends Component {
                       </Text>
                     </View>
 
-                    <TouchableOpacity
-                      style={{
-                        height: 35,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 20,
-                        borderWidth: 2,
-                        borderColor: 'rgb(180,180,180)',
-                        marginRight: 20,
-                      }}
-                      onPress={this.goToScreen.bind(this)}
-                    >
-                      <Text
+                    <View>
+                      <TouchableOpacity
                         style={{
+                          height: 35,
                           justifyContent: 'center',
-                          color: 'rgb(150,150,150)',
-                          paddingHorizontal: 15,
+                          alignItems: 'center',
+                          borderRadius: 20,
+                          borderWidth: 2,
+                          borderColor: 'rgb(180,180,180)',
+                          marginRight: 20,
                         }}
+                        onPress={this.goToScreen.bind(this)}
                       >
-                        Logo
-                      </Text>
-                    </TouchableOpacity>
+                        <Text
+                          style={{
+                            justifyContent: 'center',
+                            color: 'rgb(150,150,150)',
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          Logo
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          height: 35,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderRadius: 20,
+                          borderWidth: 2,
+                          borderColor: 'rgb(180,180,180)',
+                          marginRight: 20,
+                          marginTop: 5,
+                        }}
+                        onPress={this.handleSaved.bind(this)}
+                      >
+                        <Text
+                          style={{
+                            justifyContent: 'center',
+                            color: 'rgb(150,150,150)',
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          Saved
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
 
                   {this.state.top3Tags.length !== 0 ? (

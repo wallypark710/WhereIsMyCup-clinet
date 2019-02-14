@@ -30,9 +30,14 @@ class SuggestCafeListEntry extends Component {
             <Text style={{ fontSize: 24, fontWeight: '500', margin: 5 }}>
               {this.props.cafe.title}
             </Text>
-            <Text style={{ margin: 5, marginLeft: 10 }}>
-              {this.props.cafe.distance}m
-            </Text>
+
+            {this.props.cafe.distance ? (
+              <Text style={{ margin: 5, marginLeft: 10 }}>
+                {this.props.cafe.distance}m
+              </Text>
+            ) : (
+              <Text />
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>

@@ -44,6 +44,20 @@ class Feedback extends Component {
       hipMusic: false,
       photoZone: false,
     },
+    tagColor: {
+      spaceL: '#F6B352',
+      spaceS: '#F6B352',
+      professional: '#F6B352',
+      menuVariety: '#F6B352',
+      menuSimple: '#F6B352',
+      kindness: '#F6B352',
+      workingSpace: '#F6B352',
+      dessertVariety: '#F6B352',
+      nonCaffeine: '#F6B352',
+      calmMusic: '#F6B352',
+      hipMusic: '#F6B352',
+      photoZone: '#F6B352',
+    },
   };
 
   async handleGet() {
@@ -86,14 +100,22 @@ class Feedback extends Component {
           onPress={() => {
             let temp = Object.assign({}, this.state.checkTag);
             temp[itemData.item[1]] = !temp[itemData.item[1]];
+
+            let color = Object.assign({}, this.state.tagColor);
+            color[itemData.item[1]] =
+              this.state.tagColor[itemData.item[1]] === '#F6B352'
+                ? '#881600'
+                : '#F6B352';
+
             this.setState({
               checkTag: temp,
+              tagColor: color,
             });
           }}
         >
           <View
             style={{
-              backgroundColor: 'black',
+              backgroundColor: this.state.tagColor[itemData.item[1]],
               borderRadius: 50,
               justifyContent: 'center',
               alignSelf: 'center',
@@ -133,8 +155,8 @@ class Feedback extends Component {
                 marginBottom: 30,
               }}
             >
-              <Text style={{ fontSize: 35, fontWeight: '600' }}>
-                What makes you happy?!
+              <Text style={{ fontSize: 35, fontWeight: '700' }}>
+                What makes you happy?
               </Text>
             </View>
             <FlatList
@@ -145,24 +167,6 @@ class Feedback extends Component {
               style={{ width: width, backgroundColor: 'white' }}
             />
           </View>
-
-          {/*
-          <View style={{ flex: 1, marginBottom: 60 }}>
-            <View style={{ marginLeft: 20, padding: 10 }}>
-              <Text style={{ fontSize: 30, fontWeight: '700' }}>
-                What the Bean!
-              </Text>
-            </View>
-
-            <FlatList
-              data={this.state.item}
-              numColumns={2}
-              keyExtractor={this._keyExtractor}
-              renderItem={this.renderRowItem.bind(this)}
-              style={{ width: width }}
-            />
-          </View>
-          */}
 
           <View style={styles.btn}>
             <TouchableOpacity
