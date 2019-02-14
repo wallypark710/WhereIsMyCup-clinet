@@ -18,15 +18,16 @@ class Feedback extends Component {
     item: [
       ['넉넉한 공간', 'spaceL'],
       ['아담한 공간', 'spaceS'],
-      ['전문적', 'professional'],
-      ['다양한 메뉴', 'menuVariety'],
+      ['조용한 음악', 'calmMusic'],
+      ['작업하기 좋은 공간', 'workingSpace'],
       ['심플한 메뉴', 'menuSimple'],
       ['친절해요', 'kindness'],
-      ['작업하기 좋은 공간', 'workingSpace'],
+      ['다양한 메뉴', 'menuVariety'],
       ['다양한 디저트', 'dessertVariety'],
       ['디카페인 메뉴', 'nonCaffeine'],
-      ['조용한 음악', 'calmMusic'],
+      ['전문적', 'professional'],
       ['신나는 음악', 'hipMusic'],
+      ['사진찍기 좋아요', 'photoZone'],
     ],
 
     checkTag: {
@@ -41,6 +42,7 @@ class Feedback extends Component {
       nonCaffeine: false,
       calmMusic: false,
       hipMusic: false,
+      photoZone: false,
     },
   };
 
@@ -76,14 +78,11 @@ class Feedback extends Component {
   }
 
   renderRowItem(itemData) {
+    console.log(itemData.item[0].length);
     return (
       <View>
         <TouchableOpacity
-          style={{
-            width: 170,
-            paddingLeft: 40,
-            paddingRight: 10,
-          }}
+          style={{ marginLeft: width * 0.0077 }}
           onPress={() => {
             let temp = Object.assign({}, this.state.checkTag);
             temp[itemData.item[1]] = !temp[itemData.item[1]];
@@ -94,21 +93,23 @@ class Feedback extends Component {
         >
           <View
             style={{
-              backgroundColor: 'orange',
+              backgroundColor: 'black',
               borderRadius: 50,
               justifyContent: 'center',
               alignSelf: 'center',
-              width: 120,
+              width: itemData.item[0].length * 10 + 40,
+              height: 40,
               paddingVertical: 5,
               paddingHorizontal: 7,
-              margin: 10,
+              margin: 7,
             }}
           >
             <Text
               style={{
                 color: '#fff',
                 alignSelf: 'center',
-                fontSize: 13,
+                fontSize: 14,
+                fontWeight: '600',
               }}
             >
               {itemData.item[0]}
@@ -125,18 +126,27 @@ class Feedback extends Component {
       <View style={styles.container}>
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 20 }}>
-            <View style={{ marginLeft: 20, padding: 10 }}>
-              <Text style={{ fontSize: 30, fontWeight: '700' }}>Good</Text>
+            <View
+              style={{
+                marginLeft: width * 0.0077,
+                padding: 10,
+                marginBottom: 30,
+              }}
+            >
+              <Text style={{ fontSize: 35, fontWeight: '600' }}>
+                What makes you happy?!
+              </Text>
             </View>
             <FlatList
               data={this.state.item}
-              numColumns={2}
+              numColumns={3}
               keyExtractor={this._keyExtractor}
               renderItem={this.renderRowItem.bind(this)}
-              style={{ width: width }}
+              style={{ width: width, backgroundColor: 'white' }}
             />
           </View>
 
+          {/*
           <View style={{ flex: 1, marginBottom: 60 }}>
             <View style={{ marginLeft: 20, padding: 10 }}>
               <Text style={{ fontSize: 30, fontWeight: '700' }}>
@@ -149,8 +159,10 @@ class Feedback extends Component {
               numColumns={2}
               keyExtractor={this._keyExtractor}
               renderItem={this.renderRowItem.bind(this)}
+              style={{ width: width }}
             />
           </View>
+          */}
 
           <View style={styles.btn}>
             <TouchableOpacity
@@ -184,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 20,
     margin: 30,
-    marginLeft: width / 2 - 50,
+    marginLeft: width / 2 - (width * 0.3) / 2,
   },
   btnEntry: {
     paddingVertical: 10,
