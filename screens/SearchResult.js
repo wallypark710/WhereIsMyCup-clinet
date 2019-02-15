@@ -20,15 +20,17 @@ class SearchResult extends Component {
     latitude: this.props.navigation.getParam('lat'),
     longitude: this.props.navigation.getParam('lng'),
     newSearchKeyword: '',
-    end: 5,
+    viewCafeList: [],
+    endIdx: 5,
   };
 
   handleGoBack() {
-    this.setState({ cafeList: [] });
+    this.setState({ cafeList: [], endIdx: 5 });
     this.props.navigation.goBack();
   }
 
   async requestSearchResult() {
+    this.flatListRef.scrollToOffset({ y: 0, animated: false });
     axios
       .get(`http://13.125.24.9:3000/api/cafe/search/${this.state.target}`, {
         headers: {
@@ -39,9 +41,11 @@ class SearchResult extends Component {
       })
       .then((result) => {
         console.log(this.state.target);
+        let endIdx = 5;
         this.setState({
           cafeList: result.data,
-          viewCafeList: result.data.slice(0, 5),
+          viewCafeList: result.data.slice(0, endIdx),
+          endIdx: endIdx,
         });
       })
       .catch((err) => {
@@ -52,7 +56,20 @@ class SearchResult extends Component {
   componentDidMount() {
     if (this.state.target) {
       this.requestSearchResult();
+    } else {
+      this.setState({
+        viewCafeList: this.state.cafeList.slice(0, this.state.endIdx),
+      });
     }
+  }
+
+  loadMore() {
+    let endIdx = this.state.endIdx + 5;
+
+    this.setState({
+      viewCafeList: this.state.cafeList.slice(0, endIdx),
+      endIdx: endIdx,
+    });
   }
 
   render() {
@@ -80,19 +97,26 @@ class SearchResult extends Component {
               />
             </View>
           </View>
-          <ScrollView>
-            <FlatList
-              data={this.state.cafeList}
-              numColumns={1}
-              keyExtractor={this._keyExtractor}
-              renderItem={(itemData) => (
-                <SuggestCafeListEntry
-                  cafe={itemData.item}
-                  handlePress={this.props.navigation.getParam('handlePress')}
-                />
-              )}
-            />
-          </ScrollView>
+
+          <FlatList
+            data={this.state.viewCafeList}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={(itemData) => (
+              <SuggestCafeListEntry
+                key={itemData.item.toString()}
+                cafe={itemData.item}
+                handlePress={this.props.navigation.getParam('handlePress')}
+              />
+            )}
+            onEndReached={() => {
+              console.log('event start');
+              this.loadMore();
+            }}
+            onEndReachedThreshold={0}
+            ref={(ref) => {
+              this.flatListRef = ref;
+            }}
+          />
         </View>
       </SafeAreaView>
     );
