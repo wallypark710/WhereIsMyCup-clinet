@@ -44,6 +44,7 @@ const AppNavigator = createStackNavigator(
       screen: Home,
       navigationOptions: {
         header: null,
+        gesturesEnabled: false,
       },
     },
 
@@ -64,11 +65,16 @@ const AppNavigator = createStackNavigator(
 
     Feedback: {
       screen: Feedback,
-      navigationOptions: {},
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+        headerTintColor: 'black',
+      },
     },
   },
   {
-    initialRouteName: 'Feedback',
+    initialRouteName: 'Welcome',
   },
 );
 
