@@ -31,32 +31,34 @@ class SearchResult extends Component {
 
   async requestSearchResult() {
     this.flatListRef.scrollToOffset({ y: 0, animated: false });
-    axios
-      .get(`http://13.125.24.9:3000/api/cafe/search/${this.state.target}`, {
-        headers: {
-          'x-access-token': await AsyncStorage.getItem('access'),
-          latitude: this.state.latitude,
-          longitude: this.state.longitude,
-        },
-      })
-      .then((result) => {
-        console.log(this.state.target);
-        let endIdx = 5;
-        this.setState({
-          cafeList: result.data,
-          viewCafeList: result.data.slice(0, endIdx),
-          endIdx: endIdx,
+    if (this.state.target !== '') {
+      axios
+        .get(`http://13.125.24.9:3000/api/cafe/search/${this.state.target}`, {
+          headers: {
+            'x-access-token': await AsyncStorage.getItem('access'),
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+          },
+        })
+        .then((result) => {
+          console.log(this.state.target);
+          let endIdx = 5;
+          this.setState({
+            cafeList: result.data,
+            viewCafeList: result.data.slice(0, endIdx),
+            endIdx: endIdx,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   }
 
   componentDidMount() {
     if (this.state.target) {
       this.requestSearchResult();
-    } else {
+    } else if (Array.isArray(this.state.cafeList)) {
       this.setState({
         viewCafeList: this.state.cafeList.slice(0, this.state.endIdx),
       });
