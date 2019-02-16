@@ -43,13 +43,29 @@ class SignIn extends Component {
 
         await Login(this.state.email, this.state.password);
       })
-      .catch((err) => alert('err'));
+      .catch((err) => {
+        switch (err.response.status) {
+          case 400:
+            alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+            break;
+        }
+      });
 
     if (this.state.login) {
       console.log('login Success : ', this.state.login);
       this.goToScreen('Home');
     }
   };
+
+  componentDidMount() {
+    this.props.navigation.addListener('didFocus', () => {
+      this.setState({ login: false });
+      console.log('Login on');
+    });
+    this.props.navigation.addListener('willBlur', () => {
+      console.log('Login off');
+    });
+  }
 
   render() {
     return (

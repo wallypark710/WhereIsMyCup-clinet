@@ -10,6 +10,7 @@ import SearchResult from './screens/SearchResult';
 import GoogleMap from './screens/Map';
 import CafeInfo from './screens/CafeInfo';
 import Feedback from './screens/Feedback';
+import UserInfo from './screens/UserInfo';
 
 const AppNavigator = createStackNavigator(
   {
@@ -71,6 +72,10 @@ const AppNavigator = createStackNavigator(
         },
         headerTintColor: 'black',
       },
+    },
+
+    UserInfo: {
+      screen: UserInfo,
     },
   },
   {

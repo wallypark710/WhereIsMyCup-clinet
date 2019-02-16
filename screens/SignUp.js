@@ -23,13 +23,14 @@ class SignUp extends Component {
     name: '',
     password: '',
     confirmPassword: '',
+    isSignUp: false,
   };
 
-  handlePost = () => {
+  handlePost = async () => {
     if (this.state.password !== this.state.confirmPassword) {
       alert('password is not correct');
     } else {
-      axios
+      await axios
         .post(`http://13.125.24.9:3000/oauth/local/register`, {
           name: this.state.name,
           email: this.state.email,
@@ -53,11 +54,38 @@ class SignUp extends Component {
             result.headers['x-access-token'],
           );
 
-          this.props.navigation.navigate('Home');
+          this.setState({ isSignUp: true });
         })
-        .catch((err) => alert('email is already in use'));
+        .catch((err) => {
+          switch (err.response.status) {
+            case 403:
+              alert('입력하신 정보가 형식 맞지 않습니다.');
+              break;
+
+            case 400:
+              alert('이미 존재하는 이메일 입니다.');
+              break;
+
+            default:
+              break;
+          }
+        });
+
+      if (this.state.isSignUp) {
+        console.log('login Success : ', this.state.isSignUp);
+        this.props.navigation.navigate('Home');
+      }
     }
   };
+
+  componentDidMount() {
+    this.props.navigation.addListener('didFocus', () => {
+      console.log('Register on');
+    });
+    this.props.navigation.addListener('willBlur', () => {
+      console.log('Register off');
+    });
+  }
 
   render() {
     return (

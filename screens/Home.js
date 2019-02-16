@@ -38,9 +38,14 @@ class Home extends Component {
     AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
     this.props.navigation.addListener('didFocus', this.getPlaces.bind(this));
+
+    this.props.navigation.addListener('willBlur', () => {
+      console.log('Home off');
+    });
   }
 
   async getPlaces() {
+    console.log('Home on');
     axios
       .get(`http://13.125.24.9:3000/api/cafe/curLoc`, {
         headers: {

@@ -74,8 +74,9 @@ class UserInfo extends Component {
           <View style={styles.btnContainer}>
             <TouchableOpacity
               style={styles.btnEntry}
-              onPress={() => {
-                this.goToScreen('SignIn');
+              onPress={async () => {
+                await AsyncStorage.setItem('saved', '[]');
+                this.goToScreen('Welcome');
               }}
             >
               <Text style={styles.btnText}>Logout</Text>
@@ -85,7 +86,7 @@ class UserInfo extends Component {
               style={styles.btnEntry}
               onPress={this.handleDeleteAccount.bind(this)}
             >
-              <Text style={styles.btnText}>Delete acount</Text>
+              <Text style={styles.btnText}>Delete account</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
     width: width * 0.3,
     backgroundColor: 'white',
     marginLeft: width / 2 - width * 0.15,
+    marginBottom: 20,
   },
   btnEntry: {
     marginTop: 20,

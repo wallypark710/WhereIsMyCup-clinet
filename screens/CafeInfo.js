@@ -60,19 +60,21 @@ class CafeInfo extends Component {
   renderTag(itemData) {
     return (
       <View
+        key={itemData.toString()}
         style={{
           margin: 2,
-          marginLeft: 14,
+          marginRight: 10,
         }}
       >
         <Text
+          adjustsFontSizeToFit={true}
+          numberOfLines={1}
           style={{
-            fontSize: 15,
             fontWeight: '700',
             color: 'black',
           }}
         >
-          #{this.state.tag[itemData.item]}
+          #{this.state.tag[itemData]}
         </Text>
       </View>
     );
@@ -172,7 +174,7 @@ class CafeInfo extends Component {
           } = result;
 
           await AsyncStorage.setItem('saved', JSON.stringify(favorites));
-          alert('Removed from saved list!');
+
           this.setState({ isSaved: false });
         })
         .catch((err) => console.log(err.message));
@@ -196,7 +198,7 @@ class CafeInfo extends Component {
             },
           } = result;
           await AsyncStorage.setItem('saved', JSON.stringify(favorites));
-          alert('Cafe has been saved!');
+
           this.setState({ isSaved: true });
         })
         .catch((err) => console.log(err.message));
@@ -339,13 +341,19 @@ class CafeInfo extends Component {
                   </View>
 
                   {this.state.top3Tags.length !== 0 ? (
-                    <FlatList
-                      data={this.state.top3Tags}
-                      numColumns={3}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={this.renderTag.bind(this)}
-                      style={{ width: width, backgroundColor: 'white' }}
-                    />
+                    <View style={{ backgroundColor: 'white', width: width }}>
+                      <View
+                        style={{
+                          width: width - 40,
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          alignItems: 'stretch',
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {this.state.top3Tags.map((ele) => this.renderTag(ele))}
+                      </View>
+                    </View>
                   ) : (
                     <Text style={{ backgroundColor: 'white' }} />
                   )}
