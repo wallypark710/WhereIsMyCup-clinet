@@ -17,6 +17,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 const { height, width } = Dimensions.get('window');
 
 class CafeInfo extends Component {
@@ -45,6 +46,8 @@ class CafeInfo extends Component {
       hipMusic: '신나는 음악',
       photoZone: '사진찍기 좋아요',
     },
+    feedbackView: true,
+    timer: null,
   };
 
   goToScreen() {
@@ -57,8 +60,8 @@ class CafeInfo extends Component {
     return (
       <View
         style={{
-          margin: 5,
-          marginLeft: 20,
+          margin: 2,
+          marginLeft: 14,
         }}
       >
         <Text
@@ -177,6 +180,22 @@ class CafeInfo extends Component {
     }
   }
 
+  blinkText() {
+    const pid = setInterval(() => {
+      this.setState({ feedbackView: !this.state.feedbackView });
+    }, 800);
+
+    this.setState({ timer: pid });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener('didFocus', this.blinkText.bind(this));
+  }
+
   render() {
     const props = this.props.navigation.state.params;
     const img = props.cafe.images[0]
@@ -227,6 +246,7 @@ class CafeInfo extends Component {
               style={{ flex: 1 }}
               bounces={false}
               onScroll={this.handleScroll.bind(this)}
+              scrollEventThrottle={16}
             >
               <View style={styles.view} />
 
@@ -262,6 +282,19 @@ class CafeInfo extends Component {
                         }}
                       />
                     </TouchableOpacity>
+                  </View>
+
+                  <View style={{ backgroundColor: 'white', height: 20 }}>
+                    <Text
+                      style={{
+                        alignSelf: 'flex-end',
+                        marginRight: 20,
+                        fontSize: 14,
+                        display: this.state.feedbackView ? 'flex' : 'none',
+                      }}
+                    >
+                      feedback!
+                    </Text>
                   </View>
 
                   {this.state.top3Tags.length !== 0 ? (
@@ -344,7 +377,6 @@ const styles = StyleSheet.create({
   },
   infoBody: {
     flex: 2,
-    // paddingVertical: 190,
     backgroundColor: 'white',
   },
   bodyContents: {
