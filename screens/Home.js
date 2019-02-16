@@ -13,7 +13,6 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
 import axios from 'axios';
-import * as Keychain from 'react-native-keychain';
 
 import GoogleMap from './Map';
 import UserInfo from './UserInfo';
@@ -25,8 +24,8 @@ import SearchResult from './SearchResult';
 
 class Home extends Component {
   state = {
-    latitude: 39.7392,
-    longitude: -104.9903,
+    latitude: 37.5461212,
+    longitude: 126.9934138,
     error: null,
     cafeList: [],
     suggestCafeList: [],
@@ -75,7 +74,6 @@ class Home extends Component {
   }
 
   goToScreen(cafe) {
-    console.log(cafe);
     this.props.navigation.navigate('CafeInfo', {
       lat: this.state.latitude,
       lng: this.state.longitude,
@@ -84,15 +82,13 @@ class Home extends Component {
   }
 
   async handleAppState(currentAppState) {
-    console.log(currentAppState);
     this.setState({ appState: currentAppState });
 
     if (currentAppState === 'active') {
       //refresh token 전송. 3600000
       let currentTime = new Date().getTime();
 
-      if (currentTime - this.state.timeOut > 10000) {
-        console.log('토큰 만료');
+      if (currentTime - this.state.timeOut > 3600000) {
         const credentials = await Keychain.getGenericPassword();
 
         if (credentials) {
@@ -103,14 +99,12 @@ class Home extends Component {
               },
             })
             .then(async (result) => {
-              console.log('access token renewal success');
               await AsyncStorage.setItem(
                 'access',
                 result.headers['x-access-token'],
               );
             })
             .catch(async () => {
-              console.log('auto login part');
               const email = JSON.parse(credentials.username).email;
               const pw = JSON.parse(credentials.username).pw;
               const temp = await Login(email, pw);

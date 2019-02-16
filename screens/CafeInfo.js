@@ -16,6 +16,7 @@ import {
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GoogleMap from './Map';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
 const { height, width } = Dimensions.get('window');
 
 class CafeInfo extends Component {
@@ -29,6 +30,21 @@ class CafeInfo extends Component {
     contact: this.props.navigation.state.params.cafe.contact || '',
     convenience: this.props.navigation.state.params.cafe.convenience || '',
     description: this.props.navigation.state.params.cafe.description || '',
+    view: true,
+    tag: {
+      spaceL: '넉넉한 공간',
+      spaceS: '아담한 공간',
+      professional: '전문적',
+      menuVariety: '다양한 메뉴',
+      menuSimple: '심플한 메뉴',
+      kindness: '친절해요',
+      workingSpace: '작업하기 좋은 공간',
+      dessertVariety: '다양한 디저트',
+      nonCaffeine: '디카페인 메뉴',
+      calmMusic: '조용한 음악',
+      hipMusic: '신나는 음악',
+      photoZone: '사진찍기 좋아요',
+    },
   };
 
   goToScreen() {
@@ -43,7 +59,6 @@ class CafeInfo extends Component {
         style={{
           margin: 5,
           marginLeft: 20,
-          margin: 7,
         }}
       >
         <Text
@@ -53,7 +68,7 @@ class CafeInfo extends Component {
             color: 'black',
           }}
         >
-          #{itemData.item}
+          #{this.state.tag[itemData.item]}
         </Text>
       </View>
     );
@@ -61,12 +76,12 @@ class CafeInfo extends Component {
 
   renderOpeningHours() {
     return this.state.openingHours.length !== 0 ? (
-      <View style={{ margin: 10 }}>
+      <View key={'openingHours'} style={{ margin: 10 }}>
         <View>
           <Text style={styles.bodyContentTitle}>Opening Hours</Text>
         </View>
-        {this.state.openingHours.map((ele) => (
-          <Text>{ele.time}</Text>
+        {this.state.openingHours.map((ele, idx) => (
+          <Text key={idx.toString()}>{ele.time}</Text>
         ))}
       </View>
     ) : (
@@ -76,7 +91,7 @@ class CafeInfo extends Component {
 
   renderContact() {
     return this.state.contact ? (
-      <View style={{ margin: 10 }}>
+      <View key={'contact'} style={{ margin: 10 }}>
         <View>
           <Text style={styles.bodyContentTitle}>Contact</Text>
         </View>
@@ -95,7 +110,7 @@ class CafeInfo extends Component {
 
   renderConvevience() {
     return this.state.convenience ? (
-      <View style={{ margin: 10 }}>
+      <View key={'convevience'} style={{ margin: 10 }}>
         <View>
           <Text style={styles.bodyContentTitle}>Convenience</Text>
         </View>
@@ -108,7 +123,7 @@ class CafeInfo extends Component {
 
   renderDiscription() {
     return this.state.description ? (
-      <View style={{ margin: 10 }}>
+      <View key={'discription'} style={{ margin: 10 }}>
         <View>
           <Text style={styles.bodyContentTitle}>About</Text>
         </View>
@@ -133,17 +148,33 @@ class CafeInfo extends Component {
   }
 
   async handleSaved() {
-    axios.post(
-      'http://13.125.24.9:3000/api/users/favorites',
-      {
-        cafeId: this.props.navigation.state.params.cafe._id,
-      },
-      {
-        headers: {
-          'x-access-token': await AsyncStorage.getItem('access'),
+    axios
+      .post(
+        'http://13.125.24.9:3000/api/users/favorites',
+        {
+          cafeId: this.props.navigation.state.params.cafe._id,
         },
-      },
-    );
+        {
+          headers: {
+            'x-access-token': await AsyncStorage.getItem('access'),
+          },
+        },
+      )
+      .then(() => {
+        alert('Cafe has been saved!');
+      })
+      .catch((err) => console.log(err.message));
+  }
+
+  handleScroll(event) {
+    console.log(event.nativeEvent.contentOffset.y);
+    if (event.nativeEvent.contentOffset.y > 20) {
+      this.setState({ view: false });
+    }
+
+    if (event.nativeEvent.contentOffset.y <= 20) {
+      this.setState({ view: true });
+    }
   }
 
   render() {
@@ -151,15 +182,52 @@ class CafeInfo extends Component {
     const img = props.cafe.images[0]
       ? { uri: props.cafe.images[0] }
       : require('../images/cafe.jpg');
-    console.log(this.props.navigation.state.params);
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Image source={img} style={styles.img} />
 
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              right: 0,
+              display: this.state.view ? 'flex' : 'none',
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                marginTop: 20,
+                marginRight: 20,
+                borderRadius: 100,
+                borderWidth: 2,
+                backgroundColor: 'white',
+                borderColor: 'white',
+                width: 35,
+                height: 35,
+                alignItems: 'center',
+                opacity: 0.8,
+              }}
+              onPress={this.handleSaved.bind(this)}
+            >
+              <Icon
+                name="ios-heart"
+                size={27}
+                style={{
+                  marginTop: 2,
+                  color: '#B60010',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
           <View style={styles.scrollContainer}>
-            <ScrollView style={{ flex: 1 }} bounces={false}>
+            <ScrollView
+              style={{ flex: 1 }}
+              bounces={false}
+              onScroll={this.handleScroll.bind(this)}
+            >
               <View style={styles.view} />
 
               <View style={styles.infoContainer}>
@@ -182,60 +250,25 @@ class CafeInfo extends Component {
                       </Text>
                     </View>
 
-                    <View>
-                      <TouchableOpacity
+                    <TouchableOpacity onPress={this.goToScreen.bind(this)}>
+                      <Image
+                        source={require('../images/symbol.png')}
                         style={{
-                          height: 35,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderRadius: 20,
-                          borderWidth: 2,
-                          borderColor: 'rgb(180,180,180)',
+                          width: 70,
+                          height: 70,
+                          resizeMode: 'cover',
+                          backgroundColor: 'white',
                           marginRight: 20,
                         }}
-                        onPress={this.goToScreen.bind(this)}
-                      >
-                        <Text
-                          style={{
-                            justifyContent: 'center',
-                            color: 'rgb(150,150,150)',
-                            paddingHorizontal: 15,
-                          }}
-                        >
-                          Logo
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          height: 35,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderRadius: 20,
-                          borderWidth: 2,
-                          borderColor: 'rgb(180,180,180)',
-                          marginRight: 20,
-                          marginTop: 5,
-                        }}
-                        onPress={this.handleSaved.bind(this)}
-                      >
-                        <Text
-                          style={{
-                            justifyContent: 'center',
-                            color: 'rgb(150,150,150)',
-                            paddingHorizontal: 15,
-                          }}
-                        >
-                          Saved
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                      />
+                    </TouchableOpacity>
                   </View>
 
                   {this.state.top3Tags.length !== 0 ? (
                     <FlatList
                       data={this.state.top3Tags}
-                      numColumns={2}
-                      keyExtractor={this._keyExtractor}
+                      numColumns={3}
+                      keyExtractor={(item, index) => index.toString()}
                       renderItem={this.renderTag.bind(this)}
                       style={{ width: width, backgroundColor: 'white' }}
                     />
@@ -281,6 +314,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     position: 'absolute',
+    zIndex: 0,
     height: height,
     width: width,
   },
@@ -300,6 +334,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'gray',
+    shadowOpacity: 0.6,
 
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -324,6 +362,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
+    marginBottom: 40,
   },
   img: {
     height: 300,

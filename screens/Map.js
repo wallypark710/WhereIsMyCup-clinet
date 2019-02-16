@@ -4,7 +4,6 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 class Map extends Component {
   render() {
-    console.log(this.props.cafeList);
     return (
       <View style={styles.container}>
         <MapView

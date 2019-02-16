@@ -53,25 +53,9 @@ class SignUp extends Component {
             result.headers['x-access-token'],
           );
 
-          // try {
-          //   const credentials = await Keychain.getGenericPassword();
-          //   const access = await AsyncStorage.getItem('access')
-          //   if(credentials){
-          //     console.log(credentials);
-          //     console.log(access)
-
-          //   } else {
-          //     console.log('err');
-          //   }
-          // } catch (err) {
-          //   console.log(err.message);
-          // }
-
-          // await Keychain.resetGenericPassword();
-
           this.props.navigation.navigate('Home');
         })
-        .catch((err) => alert(err));
+        .catch((err) => alert('email is already in use'));
     }
   };
 
@@ -175,7 +159,7 @@ class SignUp extends Component {
                     <Text
                       style={{ textAlign: 'center', color: 'rgb(150,150,150)' }}
                     >
-                      Regist
+                      Register
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -231,7 +215,7 @@ const styles = StyleSheet.create({
   },
   btnEntry: {
     marginBottom: 80,
-    marginTop: 20,
+    marginTop: 40,
     paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 2,

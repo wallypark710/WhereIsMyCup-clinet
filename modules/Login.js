@@ -14,6 +14,7 @@ export const Login = async function(email, password) {
 
     if (result.status === 200) {
       console.log('login success');
+
       const firstKeyChain = JSON.stringify({ email: email, pw: password });
       const secondKeyChain = result.headers['x-refresh-token'];
 

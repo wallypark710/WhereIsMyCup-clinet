@@ -82,6 +82,7 @@ class Feedback extends Component {
         },
       )
       .then((result) => {
+        alert('Thank you.');
         console.log(result);
       })
       .catch((err) => {
@@ -91,26 +92,29 @@ class Feedback extends Component {
     this.props.navigation.goBack();
   }
 
+  tagToggleHandler(itemData) {
+    let temp = Object.assign({}, this.state.checkTag);
+    temp[itemData.item[1]] = !temp[itemData.item[1]];
+
+    let color = Object.assign({}, this.state.tagColor);
+    color[itemData.item[1]] =
+      this.state.tagColor[itemData.item[1]] === '#F6B352'
+        ? '#881600'
+        : '#F6B352';
+
+    this.setState({
+      checkTag: temp,
+      tagColor: color,
+    });
+  }
+
   renderRowItem(itemData) {
-    console.log(itemData.item[0].length);
     return (
       <View>
         <TouchableOpacity
           style={{ marginLeft: width * 0.0077 }}
           onPress={() => {
-            let temp = Object.assign({}, this.state.checkTag);
-            temp[itemData.item[1]] = !temp[itemData.item[1]];
-
-            let color = Object.assign({}, this.state.tagColor);
-            color[itemData.item[1]] =
-              this.state.tagColor[itemData.item[1]] === '#F6B352'
-                ? '#881600'
-                : '#F6B352';
-
-            this.setState({
-              checkTag: temp,
-              tagColor: color,
-            });
+            this.tagToggleHandler.call(this, itemData);
           }}
         >
           <View
@@ -124,6 +128,7 @@ class Feedback extends Component {
               paddingVertical: 5,
               paddingHorizontal: 7,
               margin: 7,
+              marginBottom: 15,
             }}
           >
             <Text
@@ -162,7 +167,7 @@ class Feedback extends Component {
             <FlatList
               data={this.state.item}
               numColumns={3}
-              keyExtractor={this._keyExtractor}
+              keyExtractor={(item, index) => index.toString()}
               renderItem={this.renderRowItem.bind(this)}
               style={{ width: width, backgroundColor: 'white' }}
             />

@@ -29,7 +29,7 @@ class Welcome extends Component {
                 this.goToScreen('SignIn');
               }}
             >
-              <Text style={styles.btnText}>LogIn</Text>
+              <Text style={styles.btnText}>Login</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -38,7 +38,7 @@ class Welcome extends Component {
                 this.goToScreen('SignUp');
               }}
             >
-              <Text style={styles.btnText}>Regist</Text>
+              <Text style={styles.btnText}>Register</Text>
             </TouchableOpacity>
           </View>
         </View>

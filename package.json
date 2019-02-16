@@ -12,6 +12,7 @@
     "react-native": "0.58.3",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-google-places": "^2.5.2",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-keychain": "^3.0.0",
     "react-native-maps": "^0.23.0",
     "react-native-vector-icons": "^6.2.0",
