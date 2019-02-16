@@ -15,6 +15,14 @@ export const Login = async function(email, password) {
     if (result.status === 200) {
       console.log('login success');
 
+      const {
+        data: {
+          userExist: { favorites },
+        },
+      } = result;
+
+      await AsyncStorage.setItem('saved', JSON.stringify(favorites));
+
       const firstKeyChain = JSON.stringify({ email: email, pw: password });
       const secondKeyChain = result.headers['x-refresh-token'];
 

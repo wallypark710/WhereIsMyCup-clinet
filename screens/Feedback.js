@@ -45,18 +45,18 @@ class Feedback extends Component {
       photoZone: false,
     },
     tagColor: {
-      spaceL: '#F6B352',
-      spaceS: '#F6B352',
-      professional: '#F6B352',
-      menuVariety: '#F6B352',
-      menuSimple: '#F6B352',
-      kindness: '#F6B352',
-      workingSpace: '#F6B352',
-      dessertVariety: '#F6B352',
-      nonCaffeine: '#F6B352',
-      calmMusic: '#F6B352',
-      hipMusic: '#F6B352',
-      photoZone: '#F6B352',
+      spaceL: '#0C5336',
+      spaceS: '#0C5336',
+      professional: '#0C5336',
+      menuVariety: '#0C5336',
+      menuSimple: '#0C5336',
+      kindness: '#0C5336',
+      workingSpace: '#0C5336',
+      dessertVariety: '#0C5336',
+      nonCaffeine: '#0C5336',
+      calmMusic: '#0C5336',
+      hipMusic: '#0C5336',
+      photoZone: '#0C5336',
     },
   };
 
@@ -98,9 +98,9 @@ class Feedback extends Component {
 
     let color = Object.assign({}, this.state.tagColor);
     color[itemData.item[1]] =
-      this.state.tagColor[itemData.item[1]] === '#F6B352'
-        ? '#881600'
-        : '#F6B352';
+      this.state.tagColor[itemData.item[1]] === '#C2B171'
+        ? '#0C5336'
+        : '#C2B171';
 
     this.setState({
       checkTag: temp,

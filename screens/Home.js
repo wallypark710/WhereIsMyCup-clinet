@@ -37,6 +37,7 @@ class Home extends Component {
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
+    this.props.navigation.addListener('didFocus', this.getPlaces.bind(this));
   }
 
   async getPlaces() {
@@ -99,6 +100,14 @@ class Home extends Component {
               },
             })
             .then(async (result) => {
+              const {
+                data: {
+                  user: { favorites },
+                },
+              } = result;
+
+              await AsyncStorage.setItem('saved', JSON.stringify(favorites));
+
               await AsyncStorage.setItem(
                 'access',
                 result.headers['x-access-token'],

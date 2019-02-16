@@ -48,6 +48,7 @@ class CafeInfo extends Component {
     },
     feedbackView: true,
     timer: null,
+    isSaved: null,
   };
 
   goToScreen() {
@@ -151,22 +152,55 @@ class CafeInfo extends Component {
   }
 
   async handleSaved() {
-    axios
-      .post(
-        'http://13.125.24.9:3000/api/users/favorites',
-        {
-          cafeId: this.props.navigation.state.params.cafe._id,
-        },
-        {
-          headers: {
-            'x-access-token': await AsyncStorage.getItem('access'),
+    if (this.state.isSaved) {
+      const cafeId = this.props.navigation.state.params.cafe._id;
+      axios
+        .delete(
+          `http://13.125.24.9:3000/api/users/favorites/${cafeId}`,
+
+          {
+            headers: {
+              'x-access-token': await AsyncStorage.getItem('access'),
+            },
           },
-        },
-      )
-      .then(() => {
-        alert('Cafe has been saved!');
-      })
-      .catch((err) => console.log(err.message));
+        )
+        .then(async (result) => {
+          const {
+            data: {
+              user: { favorites },
+            },
+          } = result;
+
+          await AsyncStorage.setItem('saved', JSON.stringify(favorites));
+          alert('Removed from saved list!');
+          this.setState({ isSaved: false });
+        })
+        .catch((err) => console.log(err.message));
+    } else {
+      axios
+        .post(
+          'http://13.125.24.9:3000/api/users/favorites',
+          {
+            cafeId: this.props.navigation.state.params.cafe._id,
+          },
+          {
+            headers: {
+              'x-access-token': await AsyncStorage.getItem('access'),
+            },
+          },
+        )
+        .then(async (result) => {
+          const {
+            data: {
+              user: { favorites },
+            },
+          } = result;
+          await AsyncStorage.setItem('saved', JSON.stringify(favorites));
+          alert('Cafe has been saved!');
+          this.setState({ isSaved: true });
+        })
+        .catch((err) => console.log(err.message));
+    }
   }
 
   handleScroll(event) {
@@ -192,8 +226,14 @@ class CafeInfo extends Component {
     clearInterval(this.state.timer);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.navigation.addListener('didFocus', this.blinkText.bind(this));
+    const savedList = await AsyncStorage.getItem('saved');
+    this.setState({
+      isSaved: JSON.parse(savedList).includes(
+        this.props.navigation.state.params.cafe._id,
+      ),
+    });
   }
 
   render() {
@@ -231,7 +271,7 @@ class CafeInfo extends Component {
               onPress={this.handleSaved.bind(this)}
             >
               <Icon
-                name="ios-heart"
+                name={this.state.isSaved ? 'ios-heart' : 'ios-heart-empty'}
                 size={27}
                 style={{
                   marginTop: 2,
@@ -269,32 +309,33 @@ class CafeInfo extends Component {
                         {props.cafe.addresses[0]}
                       </Text>
                     </View>
-
-                    <TouchableOpacity onPress={this.goToScreen.bind(this)}>
-                      <Image
-                        source={require('../images/symbol.png')}
-                        style={{
-                          width: 70,
-                          height: 70,
-                          resizeMode: 'cover',
-                          backgroundColor: 'white',
-                          marginRight: 20,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ backgroundColor: 'white', height: 20 }}>
-                    <Text
-                      style={{
-                        alignSelf: 'flex-end',
-                        marginRight: 20,
-                        fontSize: 14,
-                        display: this.state.feedbackView ? 'flex' : 'none',
-                      }}
-                    >
-                      feedback!
-                    </Text>
+                    <View>
+                      <TouchableOpacity onPress={this.goToScreen.bind(this)}>
+                        <Image
+                          source={require('../images/symbol.png')}
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'cover',
+                            backgroundColor: 'white',
+                            marginRight: 20,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <View style={{ backgroundColor: 'white', height: 20 }}>
+                        <Text
+                          style={{
+                            alignSelf: 'flex-end',
+                            marginRight: 20,
+                            marginTop: 5,
+                            fontSize: 14,
+                            display: this.state.feedbackView ? 'flex' : 'none',
+                          }}
+                        >
+                          feedback!
+                        </Text>
+                      </View>
+                    </View>
                   </View>
 
                   {this.state.top3Tags.length !== 0 ? (
