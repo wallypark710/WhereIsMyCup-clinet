@@ -14,15 +14,6 @@ class Welcome extends Component {
     this.props.navigation.navigate(screenName);
   };
 
-  componentDidMount() {
-    this.props.navigation.addListener('didFocus', () => {
-      console.log('welcome on');
-    });
-    this.props.navigation.addListener('willBlur', () => {
-      console.log('welcome off');
-    });
-  }
-
   render() {
     return (
       <View style={styles.contains}>

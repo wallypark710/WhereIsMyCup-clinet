@@ -158,7 +158,7 @@ class CafeInfo extends Component {
       const cafeId = this.props.navigation.state.params.cafe._id;
       axios
         .delete(
-          `http://13.125.24.9:3000/api/users/favorites/${cafeId}`,
+          `https://www.sunjae-kim.com/api/users/favorites/${cafeId}`,
 
           {
             headers: {
@@ -181,7 +181,7 @@ class CafeInfo extends Component {
     } else {
       axios
         .post(
-          'http://13.125.24.9:3000/api/users/favorites',
+          'https://www.sunjae-kim.com/api/users/favorites',
           {
             cafeId: this.props.navigation.state.params.cafe._id,
           },
@@ -206,7 +206,6 @@ class CafeInfo extends Component {
   }
 
   handleScroll(event) {
-    console.log(event.nativeEvent.contentOffset.y);
     if (event.nativeEvent.contentOffset.y > 20) {
       this.setState({ view: false });
     }
@@ -223,13 +222,11 @@ class CafeInfo extends Component {
 
     this.setState({ timer: pid });
   }
-
-  componentWillUnmount() {
-    clearInterval(this.state.timer);
-  }
-
   async componentDidMount() {
     this.props.navigation.addListener('didFocus', this.blinkText.bind(this));
+    this.props.navigation.addListener('willBlur', () => {
+      clearInterval(this.state.timer);
+    });
     const savedList = await AsyncStorage.getItem('saved');
     this.setState({
       isSaved: JSON.parse(savedList).includes(

@@ -31,16 +31,12 @@ class SignUp extends Component {
       alert('password is not correct');
     } else {
       await axios
-        .post(`http://13.125.24.9:3000/oauth/local/register`, {
+        .post(`https://www.sunjae-kim.com/oauth/local/register`, {
           name: this.state.name,
           email: this.state.email,
           password: this.state.password,
         })
         .then(async (result) => {
-          // alert(JSON.stringify(result))
-          // console.log(result.headers['x-refresh-token'])
-          // console.log(result.headers['x-access-token'])
-
           const firstKeyChain = JSON.stringify({
             email: this.state.email,
             pw: this.state.password,
@@ -72,20 +68,10 @@ class SignUp extends Component {
         });
 
       if (this.state.isSignUp) {
-        console.log('login Success : ', this.state.isSignUp);
         this.props.navigation.navigate('Home');
       }
     }
   };
-
-  componentDidMount() {
-    this.props.navigation.addListener('didFocus', () => {
-      console.log('Register on');
-    });
-    this.props.navigation.addListener('willBlur', () => {
-      console.log('Register off');
-    });
-  }
 
   render() {
     return (

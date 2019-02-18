@@ -5,7 +5,7 @@ import { AsyncStorage } from 'react-native';
 export const Login = async function(email, password) {
   try {
     const result = await axios.post(
-      `http://13.125.24.9:3000/oauth/local/login`,
+      `https://www.sunjae-kim.com/oauth/local/login`,
       {
         email: email,
         password: password,
@@ -13,8 +13,6 @@ export const Login = async function(email, password) {
     );
 
     if (result.status === 200) {
-      console.log('login success');
-
       const {
         data: {
           userExist: { favorites },
@@ -34,7 +32,6 @@ export const Login = async function(email, password) {
 
       return 1;
     } else {
-      console.log('login error');
       return 0;
     }
   } catch (err) {

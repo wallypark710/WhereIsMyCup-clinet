@@ -73,7 +73,7 @@ class Feedback extends Component {
 
     await axios
       .post(
-        `http://13.125.24.9:3000/api/cafe/feedback/${id}`,
+        `https://www.sunjae-kim.com/api/cafe/feedback/${id}`,
         {
           feedback: feedback,
         },
@@ -83,7 +83,6 @@ class Feedback extends Component {
       )
       .then((result) => {
         alert('Thank you.');
-        console.log(result);
       })
       .catch((err) => {
         console.log(err);
@@ -94,13 +93,11 @@ class Feedback extends Component {
 
   tagToggleHandler(itemData) {
     let temp = Object.assign({}, this.state.checkTag);
-    temp[itemData.item[1]] = !temp[itemData.item[1]];
+    temp[itemData[1]] = !temp[itemData[1]];
 
     let color = Object.assign({}, this.state.tagColor);
-    color[itemData.item[1]] =
-      this.state.tagColor[itemData.item[1]] === '#C2B171'
-        ? '#0C5336'
-        : '#C2B171';
+    color[itemData[1]] =
+      this.state.tagColor[itemData[1]] === '#C2B171' ? '#0C5336' : '#C2B171';
 
     this.setState({
       checkTag: temp,
@@ -110,7 +107,7 @@ class Feedback extends Component {
 
   renderRowItem(itemData) {
     return (
-      <View>
+      <View key={itemData.toString()}>
         <TouchableOpacity
           style={{ marginLeft: width * 0.0077 }}
           onPress={() => {
@@ -119,11 +116,11 @@ class Feedback extends Component {
         >
           <View
             style={{
-              backgroundColor: this.state.tagColor[itemData.item[1]],
+              backgroundColor: this.state.tagColor[itemData[1]],
               borderRadius: 50,
               justifyContent: 'center',
               alignSelf: 'center',
-              width: itemData.item[0].length * 10 + 40,
+              width: itemData[0].length * 10 + 40,
               height: 40,
               paddingVertical: 5,
               paddingHorizontal: 7,
@@ -139,7 +136,7 @@ class Feedback extends Component {
                 fontWeight: '600',
               }}
             >
-              {itemData.item[0]}
+              {itemData[0]}
             </Text>
           </View>
         </TouchableOpacity>
@@ -148,7 +145,6 @@ class Feedback extends Component {
   }
 
   render() {
-    console.log(this.state.checkTag);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -164,13 +160,19 @@ class Feedback extends Component {
                 What makes you happy?
               </Text>
             </View>
-            <FlatList
-              data={this.state.item}
-              numColumns={3}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={this.renderRowItem.bind(this)}
-              style={{ width: width, backgroundColor: 'white' }}
-            />
+
+            <View style={{ backgroundColor: 'white', width: width }}>
+              <View
+                style={{
+                  width: width,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'stretch',
+                }}
+              >
+                {this.state.item.map((ele) => this.renderRowItem(ele))}
+              </View>
+            </View>
           </View>
 
           <View style={styles.btn}>

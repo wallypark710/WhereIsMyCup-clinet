@@ -38,16 +38,11 @@ class Home extends Component {
     AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
     this.props.navigation.addListener('didFocus', this.getPlaces.bind(this));
-
-    this.props.navigation.addListener('willBlur', () => {
-      console.log('Home off');
-    });
   }
 
   async getPlaces() {
-    console.log('Home on');
     axios
-      .get(`http://13.125.24.9:3000/api/cafe/curLoc`, {
+      .get(`https://www.sunjae-kim.com/api/cafe/curLoc`, {
         headers: {
           'x-access-token': await AsyncStorage.getItem('access'),
           latitude: this.state.latitude,
@@ -55,7 +50,6 @@ class Home extends Component {
         },
       })
       .then((response) => {
-        console.log(response.data.cafeAround, response.data.recommendations);
         this.setState({
           cafeList: response.data.cafeAround,
           suggestCafeList: response.data.recommendations,
@@ -99,7 +93,7 @@ class Home extends Component {
 
         if (credentials) {
           await axios
-            .get(`http://13.125.24.9:3000/oauth/access`, {
+            .get(`https://www.sunjae-kim.com/oauth/access`, {
               headers: {
                 'x-refresh-token': credentials.password,
               },

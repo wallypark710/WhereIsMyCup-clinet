@@ -33,15 +33,17 @@ class SearchResult extends Component {
     this.flatListRef.scrollToOffset({ y: 0, animated: false });
     if (this.state.target !== '') {
       axios
-        .get(`http://13.125.24.9:3000/api/cafe/search/${this.state.target}`, {
-          headers: {
-            'x-access-token': await AsyncStorage.getItem('access'),
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
+        .get(
+          `https://www.sunjae-kim.com/api/cafe/search/${this.state.target}`,
+          {
+            headers: {
+              'x-access-token': await AsyncStorage.getItem('access'),
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+            },
           },
-        })
+        )
         .then((result) => {
-          console.log(this.state.target);
           let endIdx = 5;
           this.setState({
             cafeList: result.data,
@@ -111,7 +113,6 @@ class SearchResult extends Component {
               />
             )}
             onEndReached={() => {
-              console.log('event start');
               this.loadMore();
             }}
             onEndReachedThreshold={0}

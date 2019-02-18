@@ -17,7 +17,6 @@ class Saved extends Component {
   };
 
   goToScreen(cafe) {
-    console.log(cafe);
     this.props.navigation.navigate('CafeInfo', {
       cafe: cafe, // this merges into this screen's props.
     });
@@ -28,9 +27,8 @@ class Saved extends Component {
   }
 
   async requestUserGetSavedCafes() {
-    console.log('here');
     axios
-      .get(`http://13.125.24.9:3000/api/users/favorites`, {
+      .get(`https://www.sunjae-kim.com/api/users/favorites`, {
         headers: {
           'x-access-token': await AsyncStorage.getItem('access'),
         },

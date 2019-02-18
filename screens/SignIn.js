@@ -30,9 +30,8 @@ class SignIn extends Component {
   };
 
   handleGet = async () => {
-    console.log(this.state.email, this.state.password);
     await axios
-      .post(`http://13.125.24.9:3000/oauth/local/login`, {
+      .post(`https://www.sunjae-kim.com/oauth/local/login`, {
         email: this.state.email,
         password: this.state.password,
       })
@@ -52,7 +51,6 @@ class SignIn extends Component {
       });
 
     if (this.state.login) {
-      console.log('login Success : ', this.state.login);
       this.goToScreen('Home');
     }
   };
@@ -60,10 +58,6 @@ class SignIn extends Component {
   componentDidMount() {
     this.props.navigation.addListener('didFocus', () => {
       this.setState({ login: false });
-      console.log('Login on');
-    });
-    this.props.navigation.addListener('willBlur', () => {
-      console.log('Login off');
     });
   }
 

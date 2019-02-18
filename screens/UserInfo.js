@@ -27,7 +27,7 @@ class UserInfo extends Component {
     AlertIOS.prompt('Enter a your email', null, async (text) => {
       if (text === email) {
         axios
-          .delete(`http://13.125.24.9:3000/api/users`, {
+          .delete(`https://www.sunjae-kim.com/api/users`, {
             headers: {
               'x-access-token': await AsyncStorage.getItem('access'),
             },

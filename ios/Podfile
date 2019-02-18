@@ -1,14 +1,28 @@
 platform :ios, '12.1'
 target 'WhereIsMyCup' do
-pod 'React', :path => '../node_modules/react-native'
+pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'Core',
+    'CxxBridge',
+    'DevSupport',
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket',
+    'RCTAnimation', 
+    'DevSupport',
+    'BatchedBridge'
+  ]
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 pod 'GoogleMaps'
 pod 'GooglePlaces'
 pod 'GooglePlacePicker'
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
+pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 end
