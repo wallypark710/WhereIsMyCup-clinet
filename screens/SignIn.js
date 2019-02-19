@@ -108,6 +108,7 @@ class SignIn extends Component {
                   onChangeText={(password) => {
                     this.setState({ password });
                   }}
+                  onSubmitEditing={() => this.handleGet()}
                 />
               </View>
 
