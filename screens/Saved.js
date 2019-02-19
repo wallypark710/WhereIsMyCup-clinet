@@ -54,16 +54,17 @@ class Saved extends Component {
           <View style={{ marginVertical: 20, marginLeft: 20 }}>
             <Text style={{ fontSize: 28, fontWeight: '700' }}>Saved Cafes</Text>
           </View>
-
-          <ScrollView>
-            {this.state.savedList.map((ele, idx) => (
-              <SuggestCafeListEntry
-                key={idx}
-                cafe={ele}
-                handlePress={this.goToScreen.bind(this)}
-              />
-            ))}
-          </ScrollView>
+          <View style={{ alignItems: 'center', flex: 1 }}>
+            <ScrollView>
+              {this.state.savedList.map((ele, idx) => (
+                <SuggestCafeListEntry
+                  key={idx}
+                  cafe={ele}
+                  handlePress={this.goToScreen.bind(this)}
+                />
+              ))}
+            </ScrollView>
+          </View>
         </View>
       </SafeAreaView>
     );

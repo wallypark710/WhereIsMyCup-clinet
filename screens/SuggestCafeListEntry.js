@@ -27,17 +27,30 @@ class SuggestCafeListEntry extends Component {
           <Image source={img} style={styles.img} />
           <View
             style={{
-              borderWidth: 0.5,
-              borderColor: '#dddddd',
               height: 60,
+              position: 'absolute',
+              width: width - 80,
+              top: 190,
+              backgroundColor: 'black',
+              opacity: 0.7,
+              zIndex: 0,
+            }}
+          />
+          <View
+            style={{
+              zIndex: 1,
+              position: 'absolute',
+              width: width - 80,
+              top: 190,
             }}
           >
             <Text
               style={{
-                fontSize: 24,
+                fontSize: 23,
                 fontWeight: '500',
                 margin: 5,
                 marginLeft: 10,
+                color: 'white',
               }}
             >
               {this.props.cafe.title}
@@ -45,16 +58,23 @@ class SuggestCafeListEntry extends Component {
 
             <View
               style={{
-                flexDirection: 'row',
                 marginLeft: 10,
                 marginBottom: 10,
               }}
             >
-              <Icon name="ios-pin" size={20} />
               {this.props.cafe.distance ? (
-                <Text style={{ marginHorizontal: 5, marginTop: 4 }}>
-                  {this.props.cafe.distance}m
-                </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Icon name="ios-pin" size={20} color="white" />
+                  <Text
+                    style={{
+                      marginHorizontal: 5,
+                      marginTop: 4,
+                      color: 'white',
+                    }}
+                  >
+                    {this.props.cafe.distance}m
+                  </Text>
+                </View>
               ) : (
                 <Text />
               )}
@@ -82,6 +102,8 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
     elevation: 1,
+
+    position: 'relative',
   },
   img: {
     flex: 1,

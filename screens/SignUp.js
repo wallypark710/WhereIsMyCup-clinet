@@ -68,7 +68,7 @@ class SignUp extends Component {
         });
 
       if (this.state.isSignUp) {
-        this.props.navigation.navigate('Home');
+        this.props.navigation.navigate('Intro_1');
       }
     }
   };

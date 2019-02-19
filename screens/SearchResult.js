@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
     elevation: 1,
+    borderRadius: 3,
   },
   searchBar: {
     flex: 1,

@@ -259,6 +259,7 @@ class Home extends Component {
                 sliderWidth={width}
                 itemWidth={width * 0.8}
                 layout={'default'}
+                layoutCardOffset={20}
                 sliderHeight={270}
               />
             </View>
@@ -340,6 +341,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
     elevation: 1,
+    borderRadius: 3,
   },
   searchBar: {
     flex: 1,

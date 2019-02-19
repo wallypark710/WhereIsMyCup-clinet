@@ -11,6 +11,11 @@ import GoogleMap from './screens/Map';
 import CafeInfo from './screens/CafeInfo';
 import Feedback from './screens/Feedback';
 import UserInfo from './screens/UserInfo';
+import Intro_1 from './screens/Intro_1';
+import Intro_2 from './screens/Intro_2';
+import Intro_3 from './screens/Intro_3';
+import Intro_4 from './screens/Intro_4';
+import Intro_5 from './screens/Intro_5';
 
 const AppNavigator = createStackNavigator(
   {
@@ -77,9 +82,50 @@ const AppNavigator = createStackNavigator(
     UserInfo: {
       screen: UserInfo,
     },
+
+    Intro_1: {
+      screen: Intro_1,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      },
+    },
+    Intro_2: {
+      screen: Intro_2,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      },
+    },
+    Intro_3: {
+      screen: Intro_3,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      },
+    },
+    Intro_4: {
+      screen: Intro_4,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      },
+    },
+    Intro_5: {
+      screen: Intro_5,
+      navigationOptions: {
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      },
+    },
   },
   {
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Intro_1',
   },
 );
 
