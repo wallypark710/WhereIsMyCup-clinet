@@ -107,6 +107,11 @@ class SignUp extends Component {
                     onChangeText={(email) => {
                       this.setState({ email });
                     }}
+                    returnKeyType={'next'}
+                    onSubmitEditing={() => {
+                      this.secondTextInput.focus();
+                    }}
+                    blurOnSubmit={false}
                   />
                 </View>
 
@@ -124,6 +129,14 @@ class SignUp extends Component {
                     onChangeText={(name) => {
                       this.setState({ name });
                     }}
+                    ref={(input) => {
+                      this.secondTextInput = input;
+                    }}
+                    returnKeyType={'next'}
+                    onSubmitEditing={() => {
+                      this.thirdTextInput.focus();
+                    }}
+                    blurOnSubmit={false}
                   />
                 </View>
 
@@ -142,6 +155,14 @@ class SignUp extends Component {
                     onChangeText={(password) => {
                       this.setState({ password });
                     }}
+                    ref={(input) => {
+                      this.thirdTextInput = input;
+                    }}
+                    returnKeyType={'next'}
+                    onSubmitEditing={() => {
+                      this.fourthTextInput.focus();
+                    }}
+                    blurOnSubmit={false}
                   />
                 </View>
 
@@ -159,6 +180,12 @@ class SignUp extends Component {
                     secureTextEntry={true}
                     onChangeText={(confirmPassword) => {
                       this.setState({ confirmPassword });
+                    }}
+                    ref={(input) => {
+                      this.fourthTextInput = input;
+                    }}
+                    onSubmitEditing={() => {
+                      this.handlePost();
                     }}
                   />
                 </View>
