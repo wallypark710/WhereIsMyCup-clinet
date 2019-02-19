@@ -92,6 +92,11 @@ class SignIn extends Component {
                   onChangeText={(email) => {
                     this.setState({ email });
                   }}
+                  returnKeyType={'next'}
+                  onSubmitEditing={() => {
+                    this.secondTextInput.focus();
+                  }}
+                  blurOnSubmit={false}
                 />
               </View>
 
@@ -107,6 +112,9 @@ class SignIn extends Component {
                   secureTextEntry={true}
                   onChangeText={(password) => {
                     this.setState({ password });
+                  }}
+                  ref={(input) => {
+                    this.secondTextInput = input;
                   }}
                   onSubmitEditing={() => this.handleGet()}
                 />
