@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   mapContainer: {
-    height: 300,
+    height: 250,
     // marginHorizontal: 20,
   },
 });
