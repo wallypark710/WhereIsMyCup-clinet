@@ -6,6 +6,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class CafeListEntry extends Component {
   render() {
@@ -33,7 +34,10 @@ class CafeListEntry extends Component {
             <Text numberOfLines={1} style={{ fontWeight: 'bold' }}>
               {this.props.cafe.title}
             </Text>
-            <Text> {this.props.cafe.distance}m </Text>
+            <View style={{ flexDirection: 'row', marginTop: 3 }}>
+              <Icon name="ios-pin" size={15} />
+              <Text> {this.props.cafe.distance}m </Text>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>

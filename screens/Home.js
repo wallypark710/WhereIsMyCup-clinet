@@ -9,6 +9,7 @@ import {
   AppState,
   AsyncStorage,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
@@ -22,6 +23,9 @@ import SuggestCafeListEntry from './SuggestCafeListEntry';
 import { Login } from '../modules/Login';
 import SearchResult from './SearchResult';
 
+import Carousel from 'react-native-snap-carousel';
+
+const { height, width } = Dimensions.get('window');
 class Home extends Component {
   state = {
     latitude: 37.5461212,
@@ -55,7 +59,7 @@ class Home extends Component {
           suggestCafeList: response.data.recommendations,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.message));
   }
 
   getCurrentPositionCafeList() {
@@ -137,6 +141,19 @@ class Home extends Component {
     this.setState({ searchKeyword: '' });
   }
 
+  _renderItem({ item, index }) {
+    console.log('item');
+    return (
+      <View style={{ height: 300 }}>
+        <SuggestCafeListEntry
+          key={index}
+          cafe={item}
+          handlePress={this.goToScreen.bind(this)}
+        />
+      </View>
+    );
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -172,7 +189,7 @@ class Home extends Component {
             </View>
 
             <View style={{ marginTop: 20, marginLeft: 20 }}>
-              <Text style={{ fontSize: 24, fontWeight: '700' }}>
+              <Text style={{ fontSize: 27, fontWeight: '700' }}>
                 Nearby Cafe
               </Text>
             </View>
@@ -227,18 +244,24 @@ class Home extends Component {
             </ScrollView>
 
             <View style={{ marginLeft: 20 }}>
-              <Text style={{ fontSize: 25, fontWeight: '700' }}>
+              <Text style={{ fontSize: 28, fontWeight: '700' }}>
                 Just for You
               </Text>
             </View>
 
-            {this.state.suggestCafeList.map((ele, idx) => (
-              <SuggestCafeListEntry
-                key={idx}
-                cafe={ele}
-                handlePress={this.goToScreen.bind(this)}
+            <View style={{ marginBottom: 20 }}>
+              <Carousel
+                ref={(c) => {
+                  this._carousel = c;
+                }}
+                data={this.state.suggestCafeList}
+                renderItem={this._renderItem.bind(this)}
+                sliderWidth={width}
+                itemWidth={width * 0.8}
+                layout={'default'}
+                sliderHeight={270}
               />
-            ))}
+            </View>
           </ScrollView>
         </View>
       </SafeAreaView>

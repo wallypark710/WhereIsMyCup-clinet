@@ -102,24 +102,27 @@ class SearchResult extends Component {
             </View>
           </View>
 
-          <FlatList
-            data={this.state.viewCafeList}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={(itemData) => (
-              <SuggestCafeListEntry
-                key={itemData.item.toString()}
-                cafe={itemData.item}
-                handlePress={this.props.navigation.getParam('handlePress')}
-              />
-            )}
-            onEndReached={() => {
-              this.loadMore();
-            }}
-            onEndReachedThreshold={0}
-            ref={(ref) => {
-              this.flatListRef = ref;
-            }}
-          />
+          <View style={{ alignItems: 'center', flex: 1 }}>
+            <FlatList
+              data={this.state.viewCafeList}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={(itemData) => (
+                <SuggestCafeListEntry
+                  key={itemData.item.toString()}
+                  cafe={itemData.item}
+                  handlePress={this.props.navigation.getParam('handlePress')}
+                />
+              )}
+              onEndReached={() => {
+                this.loadMore();
+              }}
+              onEndReachedThreshold={0}
+              ref={(ref) => {
+                this.flatListRef = ref;
+              }}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
         </View>
       </SafeAreaView>
     );
