@@ -6,44 +6,71 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  AppState,
+  AsyncStorage,
 } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 
 const { height, width } = Dimensions.get('window');
+
 class Welcome extends Component {
+  state = {
+    pendding: true,
+  };
+
   goToScreen = (screenName) => {
     this.props.navigation.navigate(screenName);
   };
 
+  async componentDidMount() {
+    const isLogin = await AsyncStorage.getItem('isLogin');
+    if (isLogin === 'true') {
+      this.goToScreen('Home');
+    } else {
+      this.setState({ pendding: false });
+    }
+  }
+
   render() {
-    return (
-      <View style={styles.contains}>
-        <View style={styles.imgContainer}>
-          <Image style={styles.img} source={require('../images/LOGO.png')} />
+    if (this.state.pandding) {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: '500' }}>Loading...</Text>
         </View>
+      );
+    } else {
+      return (
+        <View style={styles.contains}>
+          <View style={styles.imgContainer}>
+            <Image style={styles.img} source={require('../images/LOGO.png')} />
+          </View>
 
-        <View style={styles.subContain}>
-          <View style={styles.btnContainer}>
-            <TouchableOpacity
-              style={styles.btnEntry}
-              onPress={() => {
-                this.goToScreen('SignIn');
-              }}
-            >
-              <Text style={styles.btnText}>Login</Text>
-            </TouchableOpacity>
+          <View style={styles.subContain}>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={styles.btnEntry}
+                onPress={() => {
+                  this.goToScreen('SignIn');
+                }}
+              >
+                <Text style={styles.btnText}>Login</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.btnEntry}
-              onPress={() => {
-                this.goToScreen('SignUp');
-              }}
-            >
-              <Text style={styles.btnText}>Register</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnEntry}
+                onPress={() => {
+                  this.goToScreen('SignUp');
+                }}
+              >
+                <Text style={styles.btnText}>Register</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

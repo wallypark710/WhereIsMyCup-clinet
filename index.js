@@ -125,7 +125,7 @@ const AppNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Intro_1',
+    initialRouteName: 'Welcome',
   },
 );
 

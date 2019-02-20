@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   AsyncStorage,
+  findNodeHandle,
 } from 'react-native';
 import axios from 'axios';
 import { Login } from '../modules/Login';
@@ -40,6 +41,8 @@ class SignIn extends Component {
           login: true,
         });
 
+        await AsyncStorage.setItem('isLogin', 'true');
+
         await Login(this.state.email, this.state.password);
       })
       .catch((err) => {
@@ -61,13 +64,21 @@ class SignIn extends Component {
     });
   }
 
+  _scrollToInput(node) {
+    this.scroll.props.scrollToFocusedInput(node);
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
         scrollEnabled={false}
-        extraScrollHeight={140}
+        enableAutomaticScroll={true}
+        extraHeight={180}
+        innerRef={(ref) => {
+          this.scroll = ref;
+        }}
       >
         <View style={styles.container}>
           <View
@@ -97,6 +108,9 @@ class SignIn extends Component {
                     this.secondTextInput.focus();
                   }}
                   blurOnSubmit={false}
+                  onFocus={(event) => {
+                    this._scrollToInput(findNodeHandle(event.target));
+                  }}
                 />
               </View>
 
@@ -117,6 +131,9 @@ class SignIn extends Component {
                     this.secondTextInput = input;
                   }}
                   onSubmitEditing={() => this.handleGet()}
+                  onFocus={(event) => {
+                    this._scrollToInput(findNodeHandle(event.target));
+                  }}
                 />
               </View>
 

@@ -121,6 +121,7 @@ class SearchResult extends Component {
                 this.flatListRef = ref;
               }}
               showsVerticalScrollIndicator={false}
+              scrollsToTop={true}
             />
           </View>
         </View>

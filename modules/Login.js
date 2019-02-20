@@ -24,7 +24,7 @@ export const Login = async function(email, password) {
       const firstKeyChain = JSON.stringify({ email: email, pw: password });
       const secondKeyChain = result.headers['x-refresh-token'];
 
-      if (AsyncStorage.getItem('access')) {
+      if (await AsyncStorage.getItem('access')) {
         await Keychain.resetGenericPassword();
       }
       await Keychain.setGenericPassword(firstKeyChain, secondKeyChain);

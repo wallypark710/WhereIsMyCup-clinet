@@ -11,10 +11,12 @@ import {
   TouchableOpacity,
   Dimensions,
   AsyncStorage,
+  findNodeHandle,
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Keychain from 'react-native-keychain';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const { height, width } = Dimensions.get('window');
 class SignUp extends Component {
@@ -73,139 +75,168 @@ class SignUp extends Component {
     }
   };
 
+  _scrollToInput(node) {
+    this.scroll.props.scrollToFocusedInput(node);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.scrollContainer}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{ flex: 1 }}
+            <KeyboardAwareScrollView
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              contentContainerStyle={styles.container}
+              scrollEnabled={false}
+              enableAutomaticScroll={true}
+              extraHeight={180}
+              innerRef={(ref) => {
+                this.scroll = ref;
+              }}
             >
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: 'white',
-                  justifyContent: 'flex-end',
-                  marginTop: height * 0.06,
-                }}
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1 }}
               >
-                <Image
-                  style={styles.img}
-                  source={require('../images/LOGO.png')}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <View style={styles.input}>
-                  <Icon name="ios-mail" size={20} />
-                  <TextInput
-                    style={styles.inputElement}
-                    placeholder="Email"
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    onChangeText={(email) => {
-                      this.setState({ email });
-                    }}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => {
-                      this.secondTextInput.focus();
-                    }}
-                    blurOnSubmit={false}
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'white',
+                    justifyContent: 'flex-end',
+                    marginTop: height * 0.06,
+                  }}
+                >
+                  <Image
+                    style={styles.img}
+                    source={require('../images/LOGO.png')}
                   />
                 </View>
+                <View style={styles.inputContainer}>
+                  <View style={styles.input}>
+                    <Icon name="ios-mail" size={20} />
+                    <TextInput
+                      style={styles.inputElement}
+                      placeholder="Email"
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      onChangeText={(email) => {
+                        this.setState({ email });
+                      }}
+                      returnKeyType={'next'}
+                      onSubmitEditing={() => {
+                        this.secondTextInput.focus();
+                      }}
+                      blurOnSubmit={false}
+                      onFocus={(event) => {
+                        this._scrollToInput(findNodeHandle(event.target));
+                      }}
+                    />
+                  </View>
 
-                <View style={styles.input}>
-                  <Icon
-                    name="ios-person"
-                    size={20}
-                    style={{ paddingRight: 4, paddingLeft: 4 }}
-                  />
-                  <TextInput
-                    style={styles.inputElement}
-                    placeholder="Username"
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    onChangeText={(name) => {
-                      this.setState({ name });
-                    }}
-                    ref={(input) => {
-                      this.secondTextInput = input;
-                    }}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => {
-                      this.thirdTextInput.focus();
-                    }}
-                    blurOnSubmit={false}
-                  />
-                </View>
+                  <View style={styles.input}>
+                    <Icon
+                      name="ios-person"
+                      size={20}
+                      style={{ paddingRight: 4, paddingLeft: 4 }}
+                    />
+                    <TextInput
+                      style={styles.inputElement}
+                      placeholder="Username"
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      onChangeText={(name) => {
+                        this.setState({ name });
+                      }}
+                      ref={(input) => {
+                        this.secondTextInput = input;
+                      }}
+                      returnKeyType={'next'}
+                      onSubmitEditing={() => {
+                        this.thirdTextInput.focus();
+                      }}
+                      blurOnSubmit={false}
+                      onFocus={(event) => {
+                        this._scrollToInput(findNodeHandle(event.target));
+                      }}
+                    />
+                  </View>
 
-                <View style={styles.input}>
-                  <Icon
-                    name="ios-lock"
-                    size={20}
-                    style={{ paddingRight: 4, paddingLeft: 4 }}
-                  />
-                  <TextInput
-                    style={styles.inputElement}
-                    placeholder="Password"
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    onChangeText={(password) => {
-                      this.setState({ password });
-                    }}
-                    ref={(input) => {
-                      this.thirdTextInput = input;
-                    }}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => {
-                      this.fourthTextInput.focus();
-                    }}
-                    blurOnSubmit={false}
-                  />
-                </View>
+                  <View style={styles.input}>
+                    <Icon
+                      name="ios-lock"
+                      size={20}
+                      style={{ paddingRight: 4, paddingLeft: 4 }}
+                    />
+                    <TextInput
+                      style={styles.inputElement}
+                      placeholder="Password"
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                      onChangeText={(password) => {
+                        this.setState({ password });
+                      }}
+                      ref={(input) => {
+                        this.thirdTextInput = input;
+                      }}
+                      returnKeyType={'next'}
+                      onSubmitEditing={() => {
+                        this.fourthTextInput.focus();
+                      }}
+                      blurOnSubmit={false}
+                      onFocus={(event) => {
+                        this._scrollToInput(findNodeHandle(event.target));
+                      }}
+                    />
+                  </View>
 
-                <View style={styles.input}>
-                  <Icon
-                    name="ios-lock"
-                    size={20}
-                    style={{ paddingRight: 4, paddingLeft: 4 }}
-                  />
-                  <TextInput
-                    style={styles.inputElement}
-                    placeholder="Confirm Password"
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    onChangeText={(confirmPassword) => {
-                      this.setState({ confirmPassword });
-                    }}
-                    ref={(input) => {
-                      this.fourthTextInput = input;
-                    }}
-                    onSubmitEditing={() => {
-                      this.handlePost();
-                    }}
-                  />
-                </View>
+                  <View style={styles.input}>
+                    <Icon
+                      name="ios-lock"
+                      size={20}
+                      style={{ paddingRight: 4, paddingLeft: 4 }}
+                    />
+                    <TextInput
+                      style={styles.inputElement}
+                      placeholder="Confirm Password"
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                      onChangeText={(confirmPassword) => {
+                        this.setState({ confirmPassword });
+                      }}
+                      ref={(input) => {
+                        this.fourthTextInput = input;
+                      }}
+                      onSubmitEditing={() => {
+                        this.handlePost();
+                      }}
+                      onFocus={(event) => {
+                        this._scrollToInput(findNodeHandle(event.target));
+                      }}
+                    />
+                  </View>
 
-                <View style={styles.btn}>
-                  <TouchableOpacity
-                    style={styles.btnEntry}
-                    onPress={() => {
-                      this.handlePost();
-                    }}
-                  >
-                    <Text
-                      style={{ textAlign: 'center', color: 'rgb(150,150,150)' }}
+                  <View style={styles.btn}>
+                    <TouchableOpacity
+                      style={styles.btnEntry}
+                      onPress={() => {
+                        this.handlePost();
+                      }}
                     >
-                      Register
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'rgb(150,150,150)',
+                        }}
+                      >
+                        Register
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            </ScrollView>
+              </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
         </SafeAreaView>
       </View>
@@ -233,7 +264,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     backgroundColor: 'white',
-    paddingBottom: 220,
+    // paddingBottom: 220,
   },
   input: {
     flexDirection: 'row',

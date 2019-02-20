@@ -15,6 +15,7 @@ const { height, width } = Dimensions.get('window');
 class Intro extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
+      headerLeft: null,
       headerRight: (
         <TouchableOpacity
           style={{

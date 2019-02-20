@@ -76,6 +76,7 @@ class UserInfo extends Component {
               style={styles.btnEntry}
               onPress={async () => {
                 await AsyncStorage.setItem('saved', '[]');
+                await AsyncStorage.setItem('isLogin', 'false');
                 this.goToScreen('Welcome');
               }}
             >
