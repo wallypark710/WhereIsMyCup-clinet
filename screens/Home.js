@@ -10,10 +10,13 @@ import {
   AsyncStorage,
   TouchableWithoutFeedback,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from 'react-navigation';
 import axios from 'axios';
+import Carousel from 'react-native-snap-carousel';
+import * as Keychain from 'react-native-keychain';
 
 import GoogleMap from './Map';
 import UserInfo from './UserInfo';
@@ -21,11 +24,8 @@ import Saved from './Saved';
 import CafeListEntry from './CafeListEntry';
 import SuggestCafeListEntry from './SuggestCafeListEntry';
 import { Login } from '../modules/Login';
-import SearchResult from './SearchResult';
 
-import Carousel from 'react-native-snap-carousel';
-
-const { height, width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 class Home extends Component {
   state = {
     latitude: 37.5461212,
@@ -34,14 +34,16 @@ class Home extends Component {
     cafeList: [],
     suggestCafeList: [],
     appState: AppState.currentState,
-    timeOut: null,
     searchKeyword: '',
   };
 
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
-    this.props.navigation.addListener('didFocus', this.getPlaces.bind(this));
+    this.props.navigation.addListener(
+      'didFocus',
+      this.getCurrentPositionCafeList.bind(this),
+    );
   }
 
   async getPlaces() {
@@ -89,44 +91,37 @@ class Home extends Component {
     this.setState({ appState: currentAppState });
 
     if (currentAppState === 'active') {
-      //refresh token 전송. 3600000
-      let currentTime = new Date().getTime();
+      const credentials = await Keychain.getGenericPassword();
 
-      if (currentTime - this.state.timeOut > 3600000) {
-        const credentials = await Keychain.getGenericPassword();
-
-        if (credentials) {
-          await axios
-            .get(`https://www.sunjae-kim.com/oauth/access`, {
-              headers: {
-                'x-refresh-token': credentials.password,
+      if (credentials) {
+        await axios
+          .get(`https://www.sunjae-kim.com/oauth/access`, {
+            headers: {
+              'x-refresh-token': credentials.password,
+            },
+          })
+          .then(async (result) => {
+            const {
+              data: {
+                user: { favorites },
               },
-            })
-            .then(async (result) => {
-              const {
-                data: {
-                  user: { favorites },
-                },
-              } = result;
+            } = result;
 
-              await AsyncStorage.setItem('saved', JSON.stringify(favorites));
+            await AsyncStorage.setItem('saved', JSON.stringify(favorites));
 
-              await AsyncStorage.setItem(
-                'access',
-                result.headers['x-access-token'],
-              );
-            })
-            .catch(async () => {
-              const email = JSON.parse(credentials.username).email;
-              const pw = JSON.parse(credentials.username).pw;
-              const temp = await Login(email, pw);
-            });
-        } else {
-          console.log('credentials error');
-        }
+            await AsyncStorage.setItem(
+              'access',
+              result.headers['x-access-token'],
+            );
+          })
+          .catch(async () => {
+            const email = JSON.parse(credentials.username).email;
+            const pw = JSON.parse(credentials.username).pw;
+            const temp = await Login(email, pw);
+          });
+      } else {
+        console.log('credentials error');
       }
-    } else {
-      this.setState({ timeOut: new Date().getTime() });
     }
   }
 
@@ -142,7 +137,6 @@ class Home extends Component {
   }
 
   _renderItem({ item, index }) {
-    console.log('item');
     return (
       <View style={{ height: 300 }}>
         <SuggestCafeListEntry
@@ -152,6 +146,10 @@ class Home extends Component {
         />
       </View>
     );
+  }
+
+  handleMapBtn() {
+    this.getCurrentPositionCafeList();
   }
 
   render() {
@@ -179,8 +177,26 @@ class Home extends Component {
             </View>
           </View>
 
-          <ScrollView>
+          <ScrollView style={{ position: 'relative' }}>
             <View style={styles.mapContainer}>
+              <View style={{ position: 'absolute', zIndex: 1 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleMapBtn();
+                  }}
+                  style={styles.mapBtn}
+                >
+                  {/*
+                  <Text
+                    style={{ color: 'white', fontSize: 11, fontWeight: '700' }}
+                  >
+                    Current Location
+                  </Text>
+                */}
+
+                  <Icon name="ios-navigate" size={32} color="#0C5336" />
+                </TouchableOpacity>
+              </View>
               <GoogleMap
                 cafeList={this.state.cafeList}
                 currentLat={this.state.latitude}
@@ -350,10 +366,14 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   scroll: {
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
   mapContainer: {
-    height: 250,
-    // marginHorizontal: 20,
+    height: 230,
+    zIndex: 0,
+  },
+  mapBtn: {
+    margin: 7,
   },
 });

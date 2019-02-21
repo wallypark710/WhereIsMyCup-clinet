@@ -34,6 +34,7 @@ class SuggestCafeListEntry extends Component {
               backgroundColor: '#222',
               opacity: 0.7,
               zIndex: 0,
+
               borderBottomLeftRadius: 10,
               borderBottomRightRadius: 10,
             }}

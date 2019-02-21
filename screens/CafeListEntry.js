@@ -23,8 +23,9 @@ class CafeListEntry extends Component {
           <View
             style={{
               flex: 2,
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+              overflow: 'hidden',
             }}
           >
             <Image style={styles.img} source={img} />
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.1,
     elevation: 1,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   img: {
     flex: 1,

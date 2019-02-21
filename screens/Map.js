@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 class Map extends Component {
@@ -23,9 +23,6 @@ class Map extends Component {
                 coordinate={{
                   latitude: ele.location.lat,
                   longitude: ele.location.lng,
-                }}
-                onPress={() => {
-                  console.log(ele.title);
                 }}
               />
             );

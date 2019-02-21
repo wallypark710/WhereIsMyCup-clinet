@@ -9,7 +9,6 @@ import {
   AppState,
   AsyncStorage,
 } from 'react-native';
-import * as Keychain from 'react-native-keychain';
 
 const { height, width } = Dimensions.get('window');
 
@@ -32,7 +31,7 @@ class Welcome extends Component {
   }
 
   render() {
-    if (this.state.pandding) {
+    if (this.state.pendding) {
       return (
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
