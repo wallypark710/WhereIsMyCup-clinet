@@ -7,10 +7,8 @@ import {
   ScrollView,
   Dimensions,
   SafeAreaView,
-  Button,
   TouchableOpacity,
   Linking,
-  FlatList,
   AsyncStorage,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -46,8 +44,8 @@ class CafeInfo extends Component {
       hipMusic: '신나는 음악',
       photoZone: '사진찍기 좋아요',
     },
-    feedbackView: true,
-    timer: null,
+    // feedbackView: true,
+    // timer: null,
     isSaved: null,
   };
 
@@ -215,18 +213,7 @@ class CafeInfo extends Component {
     }
   }
 
-  blinkText() {
-    const pid = setInterval(() => {
-      this.setState({ feedbackView: !this.state.feedbackView });
-    }, 800);
-
-    this.setState({ timer: pid });
-  }
   async componentDidMount() {
-    this.props.navigation.addListener('didFocus', this.blinkText.bind(this));
-    this.props.navigation.addListener('willBlur', () => {
-      clearInterval(this.state.timer);
-    });
     const savedList = await AsyncStorage.getItem('saved');
     this.setState({
       isSaved: JSON.parse(savedList).includes(
@@ -328,7 +315,6 @@ class CafeInfo extends Component {
                             marginRight: 20,
                             marginTop: 5,
                             fontSize: 14,
-                            display: this.state.feedbackView ? 'flex' : 'none',
                           }}
                         >
                           feedback!
