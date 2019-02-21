@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
-import SuggestCafeListEntry from './SuggestCafeListEntry';
+import SlimCafeListEntry from './SlimCafeListEntry';
 
 class SearchResult extends Component {
   state = {
@@ -107,7 +107,7 @@ class SearchResult extends Component {
               data={this.state.viewCafeList}
               keyExtractor={(item, index) => index.toString()}
               renderItem={(itemData) => (
-                <SuggestCafeListEntry
+                <SlimCafeListEntry
                   key={itemData.item.toString()}
                   cafe={itemData.item}
                   handlePress={this.props.navigation.getParam('handlePress')}

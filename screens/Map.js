@@ -11,7 +11,7 @@ class Map extends Component {
           region={{
             latitude: this.props.currentLat,
             longitude: this.props.currentLng,
-            latitudeDelta: 0.0092,
+            latitudeDelta: 0.0062,
             longitudeDelta: 0.0021,
           }}
           style={styles.container}

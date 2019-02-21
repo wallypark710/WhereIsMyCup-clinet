@@ -20,7 +20,13 @@ class CafeListEntry extends Component {
         }}
       >
         <View style={styles.container}>
-          <View style={{ flex: 2 }}>
+          <View
+            style={{
+              flex: 2,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
+          >
             <Image style={styles.img} source={img} />
           </View>
 
@@ -31,12 +37,14 @@ class CafeListEntry extends Component {
               paddingTop: 10,
             }}
           >
-            <Text numberOfLines={1} style={{ fontWeight: 'bold' }}>
+            <Text numberOfLines={1} style={{ fontWeight: '500' }}>
               {this.props.cafe.title}
             </Text>
             <View style={{ flexDirection: 'row', marginTop: 3 }}>
-              <Icon name="ios-pin" size={15} />
-              <Text> {this.props.cafe.distance}m </Text>
+              <Icon name="ios-pin" size={15} color="#888" />
+              <Text style={{ color: '#888', marginLeft: 3 }}>
+                {this.props.cafe.distance}m
+              </Text>
             </View>
           </View>
         </View>
@@ -62,6 +70,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.1,
     elevation: 1,
+    borderRadius: 10,
   },
   img: {
     flex: 1,

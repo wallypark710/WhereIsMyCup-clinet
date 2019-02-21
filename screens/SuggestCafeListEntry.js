@@ -29,11 +29,13 @@ class SuggestCafeListEntry extends Component {
             style={{
               height: 60,
               position: 'absolute',
-              width: width - 80,
+              width: width - 70,
               top: 190,
-              backgroundColor: 'black',
+              backgroundColor: '#222',
               opacity: 0.7,
               zIndex: 0,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
             }}
           />
           <View
@@ -90,7 +92,7 @@ export default SuggestCafeListEntry;
 
 const styles = StyleSheet.create({
   suggest: {
-    width: width - 80,
+    width: width - 70,
     height: 250,
     marginTop: 20,
     // marginLeft: 20,
@@ -98,10 +100,10 @@ const styles = StyleSheet.create({
 
     backgroundColor: 'white',
 
-    shadowOffset: { width: 0, height: 0 },
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    elevation: 1,
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowColor: 'black',
+    // shadowOpacity: 0.2,
+    // elevation: 1,
 
     position: 'relative',
   },
@@ -112,5 +114,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor: '#dddddd',
+    borderRadius: 10,
   },
 });

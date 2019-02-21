@@ -6,15 +6,25 @@ import {
   ScrollView,
   AsyncStorage,
   SafeAreaView,
+  TouchableWithoutFeedback,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 
-import SuggestCafeListEntry from './SuggestCafeListEntry';
+import SlimCafeListEntry from './SlimCafeListEntry';
 
 class Saved extends Component {
   state = {
     savedList: [],
   };
+
+  componentDidMount() {
+    this.requestUserGetSavedCafes();
+    this.props.navigation.addListener(
+      'didFocus',
+      this.requestUserGetSavedCafes.bind(this),
+    );
+  }
 
   goToScreen(cafe) {
     this.props.navigation.navigate('CafeInfo', {
@@ -39,14 +49,6 @@ class Saved extends Component {
       .catch((err) => console.log(err));
   }
 
-  componentDidMount() {
-    this.requestUserGetSavedCafes();
-    this.props.navigation.addListener(
-      'didFocus',
-      this.requestUserGetSavedCafes.bind(this),
-    );
-  }
-
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -55,9 +57,9 @@ class Saved extends Component {
             <Text style={{ fontSize: 28, fontWeight: '700' }}>Saved Cafes</Text>
           </View>
           <View style={{ alignItems: 'center', flex: 1 }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               {this.state.savedList.map((ele, idx) => (
-                <SuggestCafeListEntry
+                <SlimCafeListEntry
                   key={idx}
                   cafe={ele}
                   handlePress={this.goToScreen.bind(this)}
