@@ -33,7 +33,7 @@ class Home extends Component {
     error: null,
     cafeList: [],
     suggestCafeList: [],
-    appState: AppState.currentState,
+    // appState: AppState.currentState,
     searchKeyword: '',
   };
 
@@ -88,8 +88,6 @@ class Home extends Component {
   }
 
   async handleAppState(currentAppState) {
-    this.setState({ appState: currentAppState });
-
     if (currentAppState === 'active') {
       const credentials = await Keychain.getGenericPassword();
 

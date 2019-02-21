@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   TextInput,
   TouchableOpacity,
   Dimensions,
   AsyncStorage,
   findNodeHandle,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import { Login } from '../modules/Login';
@@ -48,7 +48,7 @@ class SignIn extends Component {
       .catch((err) => {
         switch (err.response.status) {
           case 400:
-            alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+            Alert.alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
             break;
         }
       });

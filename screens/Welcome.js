@@ -21,8 +21,16 @@ class Welcome extends Component {
     this.props.navigation.navigate(screenName);
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    const event = this.props.navigation.addListener(
+      'didFocus',
+      this.handleLogin.bind(this),
+    );
+  }
+
+  async handleLogin() {
     const isLogin = await AsyncStorage.getItem('isLogin');
+    console.log(isLogin);
     if (isLogin === 'true') {
       this.goToScreen('Home');
     } else {

@@ -7,6 +7,7 @@ import {
   Dimensions,
   ScrollView,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 
@@ -81,7 +82,7 @@ class Feedback extends Component {
         },
       )
       .then((result) => {
-        alert('Thank you.');
+        Alert.alert('Thank you 🎉');
       })
       .catch((err) => {
         console.log(err);

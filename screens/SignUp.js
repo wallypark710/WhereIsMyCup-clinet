@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   TextInput,
   ScrollView,
   SafeAreaView,
@@ -12,6 +11,7 @@ import {
   Dimensions,
   AsyncStorage,
   findNodeHandle,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,7 +30,7 @@ class SignUp extends Component {
 
   handlePost = async () => {
     if (this.state.password !== this.state.confirmPassword) {
-      alert('password is not correct');
+      Alert.alert('비밀번호가 일치하지 않습니다.');
     } else {
       await axios
         .post(`https://www.sunjae-kim.com/oauth/local/register`, {
@@ -57,11 +57,11 @@ class SignUp extends Component {
         .catch((err) => {
           switch (err.response.status) {
             case 403:
-              alert('입력하신 정보가 형식 맞지 않습니다.');
+              Alert.alert('입력하신 정보가 형식 맞지 않습니다.');
               break;
 
             case 400:
-              alert('이미 존재하는 이메일 입니다.');
+              Alert.alert('이미 존재하는 이메일 입니다.');
               break;
 
             default:
