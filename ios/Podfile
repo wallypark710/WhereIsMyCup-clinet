@@ -9,7 +9,6 @@ pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'RCTWebSocket',
     'RCTAnimation', 
     'DevSupport',
-    'BatchedBridge'
   ]
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 pod 'GoogleMaps'
