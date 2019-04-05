@@ -9,28 +9,32 @@ import {
   AppState,
   AsyncStorage,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
-const { height, width } = Dimensions.get('window');
+const Logo = require('../images/LOGO.png');
+
+const { width } = Dimensions.get('window');
 
 class Welcome extends Component {
   state = {
     pendding: true,
   };
 
-  goToScreen = (screenName) => {
-    this.props.navigation.navigate(screenName);
-  };
-
   componentDidMount() {
-    const event = this.props.navigation.addListener(
+    const { navigation } = this.props;
+    const event = navigation.addListener(
       'didFocus',
       this.handleLogin.bind(this),
     );
   }
 
+  goToScreen = screenName => {
+    const { navigation } = this.props;
+    navigation.navigate(screenName);
+  };
+
   async handleLogin() {
     const isLogin = await AsyncStorage.getItem('isLogin');
-    console.log(isLogin);
     if (isLogin === 'true') {
       this.goToScreen('Home');
     } else {
@@ -39,7 +43,8 @@ class Welcome extends Component {
   }
 
   render() {
-    if (this.state.pendding) {
+    const { pendding } = this.state;
+    if (pendding) {
       return (
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -47,41 +52,46 @@ class Welcome extends Component {
           <Text style={{ fontSize: 24, fontWeight: '500' }}>Loading...</Text>
         </View>
       );
-    } else {
-      return (
-        <View style={styles.contains}>
-          <View style={styles.imgContainer}>
-            <Image style={styles.img} source={require('../images/LOGO.png')} />
-          </View>
+    }
+    return (
+      <View style={styles.contains}>
+        <View style={styles.imgContainer}>
+          <Image style={styles.img} source={Logo} />
+        </View>
 
-          <View style={styles.subContain}>
-            <View style={styles.btnContainer}>
-              <TouchableOpacity
-                style={styles.btnEntry}
-                onPress={() => {
-                  this.goToScreen('SignIn');
-                }}
-              >
-                <Text style={styles.btnText}>Login</Text>
-              </TouchableOpacity>
+        <View style={styles.subContain}>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity
+              style={styles.btnEntry}
+              onPress={() => {
+                this.goToScreen('SignIn');
+              }}
+            >
+              <Text style={styles.btnText}>Login</Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.btnEntry}
-                onPress={() => {
-                  this.goToScreen('SignUp');
-                }}
-              >
-                <Text style={styles.btnText}>Register</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.btnEntry}
+              onPress={() => {
+                this.goToScreen('SignUp');
+              }}
+            >
+              <Text style={styles.btnText}>Register</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      );
-    }
+      </View>
+    );
   }
 }
 
 export default Welcome;
+
+Welcome.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   contains: {
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
   },
   subContain: {
     flex: 1,
-    width: width,
+    width,
     backgroundColor: 'white',
   },
   btnContainer: {

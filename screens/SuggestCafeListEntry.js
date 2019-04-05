@@ -8,37 +8,27 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import PropTypes from 'prop-types';
 
 const { width } = Dimensions.get('window');
+const defaultImage = require('../images/cafe.jpg');
 
 class SuggestCafeListEntry extends Component {
+  state = {};
+
   render() {
-    const img = this.props.cafe.images[0]
-      ? { uri: this.props.cafe.images[0] }
-      : require('../images/cafe.jpg');
+    const { cafe, handlePress } = this.props;
+    const img = cafe.images[0] ? { uri: cafe.images[0] } : { defaultImage };
 
     return (
       <TouchableWithoutFeedback
         onPress={() => {
-          this.props.handlePress(this.props.cafe);
+          handlePress(cafe);
         }}
       >
         <View style={styles.suggest}>
           <Image source={img} style={styles.img} />
-          <View
-            style={{
-              height: 60,
-              position: 'absolute',
-              width: width - 70,
-              top: 190,
-              backgroundColor: '#222',
-              opacity: 0.7,
-              zIndex: 0,
-
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
-            }}
-          />
+          <View style={styles.suggestCafeListTextArea} />
           <View
             style={{
               zIndex: 1,
@@ -47,25 +37,14 @@ class SuggestCafeListEntry extends Component {
               top: 190,
             }}
           >
-            <Text
-              style={{
-                fontSize: 23,
-                fontWeight: '500',
-                margin: 5,
-                marginLeft: 10,
-                color: 'white',
-              }}
-            >
-              {this.props.cafe.title}
-            </Text>
-
+            <Text style={styles.suggestCafeTitle}>{cafe.title}</Text>
             <View
               style={{
                 marginLeft: 10,
                 marginBottom: 10,
               }}
             >
-              {this.props.cafe.distance ? (
+              {cafe.distance ? (
                 <View style={{ flexDirection: 'row' }}>
                   <Icon name="ios-pin" size={20} color="white" />
                   <Text
@@ -75,7 +54,7 @@ class SuggestCafeListEntry extends Component {
                       color: 'white',
                     }}
                   >
-                    {this.props.cafe.distance}m
+                    {cafe.distance}m
                   </Text>
                 </View>
               ) : (
@@ -91,21 +70,17 @@ class SuggestCafeListEntry extends Component {
 
 export default SuggestCafeListEntry;
 
+SuggestCafeListEntry.propTypes = {
+  handlePress: PropTypes.func.isRequired,
+};
+
 const styles = StyleSheet.create({
   suggest: {
     width: width - 70,
     height: 250,
     marginTop: 20,
-    // marginLeft: 20,
     marginBottom: 20,
-
     backgroundColor: 'white',
-
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowColor: 'black',
-    // shadowOpacity: 0.2,
-    // elevation: 1,
-
     position: 'relative',
   },
   img: {
@@ -116,5 +91,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#dddddd',
     borderRadius: 10,
+  },
+  suggestCafeListTextArea: {
+    height: 60,
+    position: 'absolute',
+    width: width - 70,
+    top: 190,
+    backgroundColor: '#222',
+    opacity: 0.7,
+    zIndex: 0,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  suggestCafeTitle: {
+    fontSize: 23,
+    fontWeight: '500',
+    margin: 5,
+    marginLeft: 10,
+    color: 'white',
   },
 });

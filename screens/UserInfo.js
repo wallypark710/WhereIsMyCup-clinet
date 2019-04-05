@@ -12,8 +12,11 @@ import {
 } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const { height, width } = Dimensions.get('window');
+const Logo = require('../images/symbol.png');
+
+const { width } = Dimensions.get('window');
 
 class UserInfo extends Component {
   state = {
@@ -26,41 +29,44 @@ class UserInfo extends Component {
 
   async getUserInfo() {
     const credentials = await Keychain.getGenericPassword();
-    const email = JSON.parse(credentials.username).email;
+    const { email } = JSON.parse(credentials.username);
 
     this.setState({
-      email: email,
+      email,
     });
   }
 
-  goToScreen = (screenName) => {
-    this.props.navigation.navigate(screenName);
+  goToScreen = screenName => {
+    const { navigation } = this.props;
+    navigation.navigate(screenName);
   };
 
-  handleDeleteAccount() {
-    AlertIOS.prompt('Enter a your email', null, async (text) => {
-      if (text === this.state.email) {
+  handleDeleteAccount = () => {
+    const { email } = this.state;
+    AlertIOS.prompt('Enter a your email', null, async text => {
+      if (text === email) {
         axios
           .delete(`https://www.sunjae-kim.com/api/users`, {
             headers: {
               'x-access-token': await AsyncStorage.getItem('access'),
             },
           })
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err.message));
+          .then(result => console.log(result))
+          .catch(err => console.log(err.message));
 
         this.goToScreen('Welcome');
       } else {
         AlertIOS.alert('email is not correct');
       }
     });
-  }
+  };
 
   render() {
+    const { email } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.imgContainer}>
-          <Image style={styles.img} source={require('../images/symbol.png')} />
+          <Image style={styles.img} source={Logo} />
         </View>
         <View style={styles.subContain}>
           <View style={{ alignItems: 'center' }}>
@@ -72,7 +78,7 @@ class UserInfo extends Component {
                 marginBottom: 10,
               }}
             >
-              {this.state.email}
+              {email}
             </Text>
           </View>
           <TouchableOpacity
@@ -121,6 +127,12 @@ class UserInfo extends Component {
 
 export default UserInfo;
 
+UserInfo.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -142,7 +154,7 @@ const styles = StyleSheet.create({
   },
   subContain: {
     flex: 1,
-    width: width,
+    width,
     backgroundColor: 'white',
   },
   btnContainer: {
