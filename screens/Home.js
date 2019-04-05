@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import axios from 'axios';
 import Carousel from 'react-native-snap-carousel';
 import * as Keychain from 'react-native-keychain';
+import PropTypes from 'prop-types';
 
 import GoogleMap from './Map';
 import UserInfo from './UserInfo';
@@ -37,36 +38,39 @@ class Home extends Component {
     searchKeyword: '',
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
+    const { navigation } = this.props;
+
     AppState.addEventListener('change', this.handleAppState.bind(this));
     this.getCurrentPositionCafeList();
-    this.props.navigation.addListener(
+    navigation.addListener(
       'didFocus',
       this.getCurrentPositionCafeList.bind(this),
     );
-  }
+  };
 
-  async getPlaces() {
+  getPlaces = async () => {
+    const { latitude, longitude } = this.state;
     axios
       .get(`https://www.sunjae-kim.com/api/cafe/curLoc`, {
         headers: {
           'x-access-token': await AsyncStorage.getItem('access'),
-          latitude: this.state.latitude,
-          longitude: this.state.longitude,
+          latitude,
+          longitude,
         },
       })
-      .then((response) => {
+      .then(response => {
         this.setState({
           cafeList: response.data.cafeAround,
           suggestCafeList: response.data.recommendations,
         });
       })
-      .catch((err) => console.log(err.message));
-  }
+      .catch(err => console.log(err.message));
+  };
 
-  getCurrentPositionCafeList() {
+  getCurrentPositionCafeList = () => {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -74,20 +78,23 @@ class Home extends Component {
         });
         this.getPlaces();
       },
-      (error) => this.setState({ error: error.message }),
+      error => this.setState({ error: error.message }),
       { enableHighAccuray: false, timeout: 200000, maximumAge: 1000 },
     );
-  }
+  };
 
-  goToScreen(cafe) {
-    this.props.navigation.navigate('CafeInfo', {
-      lat: this.state.latitude,
-      lng: this.state.longitude,
-      cafe: cafe,
+  goToScreen = cafe => {
+    const { navigation } = this.props;
+    const { latitude, longitude } = this.state;
+
+    navigation.navigate('CafeInfo', {
+      lat: latitude,
+      lng: longitude,
+      cafe,
     });
-  }
+  };
 
-  async handleAppState(currentAppState) {
+  handleAppState = async currentAppState => {
     if (currentAppState === 'active') {
       const credentials = await Keychain.getGenericPassword();
 
@@ -98,7 +105,7 @@ class Home extends Component {
               'x-refresh-token': credentials.password,
             },
           })
-          .then(async (result) => {
+          .then(async result => {
             const {
               data: {
                 user: { favorites },
@@ -113,62 +120,72 @@ class Home extends Component {
             );
           })
           .catch(async () => {
-            const email = JSON.parse(credentials.username).email;
-            const pw = JSON.parse(credentials.username).pw;
-            const temp = await Login(email, pw);
+            const { email } = JSON.parse(credentials.username);
+            const { pw } = JSON.parse(credentials.username);
+
+            try {
+              await Login(email, pw);
+            } catch (err) {
+              console.log(err.message);
+            }
           });
       } else {
         console.log('credentials error');
       }
     }
-  }
+  };
 
-  searchSubmit(list) {
-    this.props.navigation.navigate('SearchResult', {
-      lat: this.state.latitude,
-      lng: this.state.longitude,
-      target: this.state.searchKeyword,
+  searchSubmit = list => {
+    const { navigation } = this.props;
+    const { latitude, longitude, searchKeyword } = this.state;
+
+    navigation.navigate('SearchResult', {
+      lat: latitude,
+      lng: longitude,
+      target: searchKeyword,
       handlePress: this.goToScreen.bind(this),
-      list: list,
+      list,
     });
     this.setState({ searchKeyword: '' });
-  }
+  };
 
-  _renderItem({ item, index }) {
-    return (
-      <View style={{ height: 300 }}>
-        <SuggestCafeListEntry
-          key={index}
-          cafe={item}
-          handlePress={this.goToScreen.bind(this)}
-        />
-      </View>
-    );
-  }
+  renderItem = ({ item, index }) => (
+    <View style={{ height: 300 }}>
+      <SuggestCafeListEntry
+        key={index}
+        cafe={item}
+        handlePress={this.goToScreen}
+      />
+    </View>
+  );
 
-  handleMapBtn() {
+  handleMapBtn = () => {
     this.getCurrentPositionCafeList();
-  }
+  };
 
-  render() {
+  render = () => {
+    const {
+      searchKeyword,
+      cafeList,
+      latitude,
+      longitude,
+      suggestCafeList,
+    } = this.state;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.explore}>
             <View style={styles.searchBarConatiner}>
-              <Icon
-                name="ios-search"
-                size={20}
-                onPress={this.searchSubmit.bind(this)}
-              />
+              <Icon name="ios-search" size={20} onPress={this.searchSubmit} />
               <TextInput
-                value={this.state.searchKeyword}
+                value={searchKeyword}
                 placeholder="search awesome cafe"
                 placeholderTextColor="grey"
                 returnKeyType="search"
                 style={styles.searchBar}
-                onSubmitEditing={this.searchSubmit.bind(this)}
-                onChangeText={(searchKeyword) => {
+                onSubmitEditing={this.searchSubmit}
+                onChangeText={searchKeyword => {
                   this.setState({ searchKeyword });
                 }}
               />
@@ -196,9 +213,9 @@ class Home extends Component {
                 </TouchableOpacity>
               </View>
               <GoogleMap
-                cafeList={this.state.cafeList}
-                currentLat={this.state.latitude}
-                currentLng={this.state.longitude}
+                cafeList={cafeList}
+                currentLat={latitude}
+                currentLng={longitude}
               />
             </View>
 
@@ -213,17 +230,17 @@ class Home extends Component {
               showsHorizontalScrollIndicator={false}
               style={styles.scroll}
             >
-              {this.state.cafeList.slice(0, 8).map((ele, idx) => (
+              {cafeList.slice(0, 8).map((ele, idx) => (
                 <CafeListEntry
-                  key={idx}
+                  key={idx.toString()}
                   cafe={ele}
-                  handlePress={this.goToScreen.bind(this)}
+                  handlePress={this.goToScreen}
                 />
               ))}
 
               <TouchableWithoutFeedback
                 onPress={() => {
-                  this.searchSubmit(this.state.cafeList);
+                  this.searchSubmit(cafeList);
                 }}
               >
                 <View
@@ -265,11 +282,11 @@ class Home extends Component {
 
             <View style={{ marginBottom: 20 }}>
               <Carousel
-                ref={(c) => {
+                ref={c => {
                   this._carousel = c;
                 }}
-                data={this.state.suggestCafeList}
-                renderItem={this._renderItem.bind(this)}
+                data={suggestCafeList}
+                renderItem={this.renderItem}
                 sliderWidth={width}
                 itemWidth={width * 0.8}
                 layout={'default'}
@@ -281,10 +298,14 @@ class Home extends Component {
         </View>
       </SafeAreaView>
     );
-  }
+  };
 }
 
-// export default Home;
+Home.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
 
 export default createBottomTabNavigator(
   {

@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  AppState,
   AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -20,29 +19,29 @@ class Welcome extends Component {
     pendding: true,
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     const { navigation } = this.props;
     const event = navigation.addListener(
       'didFocus',
       this.handleLogin.bind(this),
     );
-  }
+  };
 
   goToScreen = screenName => {
     const { navigation } = this.props;
     navigation.navigate(screenName);
   };
 
-  async handleLogin() {
+  handleLogin = async () => {
     const isLogin = await AsyncStorage.getItem('isLogin');
     if (isLogin === 'true') {
       this.goToScreen('Home');
     } else {
       this.setState({ pendding: false });
     }
-  }
+  };
 
-  render() {
+  render = () => {
     const { pendding } = this.state;
     if (pendding) {
       return (
@@ -82,7 +81,7 @@ class Welcome extends Component {
         </View>
       </View>
     );
-  }
+  };
 }
 
 export default Welcome;

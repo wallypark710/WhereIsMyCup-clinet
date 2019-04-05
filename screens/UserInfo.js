@@ -23,18 +23,18 @@ class UserInfo extends Component {
     email: '',
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.getUserInfo();
-  }
+  };
 
-  async getUserInfo() {
+  getUserInfo = async () => {
     const credentials = await Keychain.getGenericPassword();
     const { email } = JSON.parse(credentials.username);
 
     this.setState({
       email,
     });
-  }
+  };
 
   goToScreen = screenName => {
     const { navigation } = this.props;
@@ -61,7 +61,7 @@ class UserInfo extends Component {
     });
   };
 
-  render() {
+  render = () => {
     const { email } = this.state;
     return (
       <View style={styles.container}>
@@ -122,7 +122,7 @@ class UserInfo extends Component {
         </View>
       </View>
     );
-  }
+  };
 }
 
 export default UserInfo;
