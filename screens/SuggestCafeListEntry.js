@@ -18,7 +18,7 @@ class SuggestCafeListEntry extends Component {
 
   render() {
     const { cafe, handlePress } = this.props;
-    const img = cafe.images[0] ? { uri: cafe.images[0] } : { defaultImage };
+    const img = cafe.images[0] ? { uri: cafe.images[0] } : defaultImage;
 
     return (
       <TouchableWithoutFeedback
