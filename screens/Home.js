@@ -76,6 +76,8 @@ class Home extends Component {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+          latitudeDelta: 0.0062,
+          longitudeDelta: 0.0021,
           error: null,
         });
         this.getPlaces();
