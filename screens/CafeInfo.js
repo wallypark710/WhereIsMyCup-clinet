@@ -140,7 +140,7 @@ class CafeInfo extends Component {
 
   onPressCall(phoneNumber) {
     const url = `tel:+${phoneNumber}`;
-    Linking.canOpenURL(url).then(async (supported) => {
+    Linking.canOpenURL(url).then(async supported => {
       if (supported) {
         try {
           return await Linking.openURL(url);
@@ -164,7 +164,7 @@ class CafeInfo extends Component {
             },
           },
         )
-        .then(async (result) => {
+        .then(async result => {
           const {
             data: {
               user: { favorites },
@@ -175,7 +175,7 @@ class CafeInfo extends Component {
 
           this.setState({ isSaved: false });
         })
-        .catch((err) => console.log(err.message));
+        .catch(err => console.log(err.message));
     } else {
       axios
         .post(
@@ -189,7 +189,7 @@ class CafeInfo extends Component {
             },
           },
         )
-        .then(async (result) => {
+        .then(async result => {
           const {
             data: {
               user: { favorites },
@@ -199,7 +199,7 @@ class CafeInfo extends Component {
 
           this.setState({ isSaved: true });
         })
-        .catch((err) => console.log(err.message));
+        .catch(err => console.log(err.message));
     }
   }
 
@@ -334,7 +334,7 @@ class CafeInfo extends Component {
                           marginHorizontal: 20,
                         }}
                       >
-                        {this.state.top3Tags.map((ele) => this.renderTag(ele))}
+                        {this.state.top3Tags.map(ele => this.renderTag(ele))}
                       </View>
                     </View>
                   ) : (
@@ -348,7 +348,7 @@ class CafeInfo extends Component {
                         this.renderContact(),
                         this.renderConvevience(),
                         this.renderDiscription(),
-                      ].filter((ele) => ele !== 0)}
+                      ].filter(ele => ele !== 0)}
                     </View>
                   </View>
                 </View>
@@ -360,6 +360,10 @@ class CafeInfo extends Component {
                     cafeList={[props.cafe]}
                     currentLat={props.cafe.location.lat}
                     currentLng={props.cafe.location.lng}
+                    currentLatDelta={0.0062}
+                    currentLngDelta={0.0021}
+                    handlePressMarker={props.handlePressMarker}
+                    handleMapMove={props.handleMapMove}
                   />
                 </View>
               </View>

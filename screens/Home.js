@@ -95,6 +95,8 @@ class Home extends Component {
       lat: latitude,
       lng: longitude,
       cafe,
+      handlePressMarker: this.handlePressMarker,
+      handleMapMove: this.handleMapMove,
     });
   };
 
