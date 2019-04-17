@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    marginTop: 100,
+    marginTop: 80,
   },
   img: {
-    width: width * 0.5,
-    height: width * 0.5,
+    width: width * 0.4,
+    height: width * 0.4,
     resizeMode: 'cover',
   },
   subContain: {
