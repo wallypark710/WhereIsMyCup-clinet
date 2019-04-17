@@ -31,6 +31,8 @@ class Home extends Component {
   state = {
     latitude: 37.5461212,
     longitude: 126.9934138,
+    latitudeDelta: 0.0062,
+    longitudeDelta: 0.0021,
     error: null,
     cafeList: [],
     suggestCafeList: [],
@@ -159,6 +161,22 @@ class Home extends Component {
     </View>
   );
 
+  handlePressMarker = cafe => {
+    this.setState({
+      latitude: cafe.location.lat,
+      longitude: cafe.location.lng,
+    });
+  };
+
+  handleMapMove = position => {
+    this.setState({
+      latitude: position.latitude,
+      longitude: position.longitude,
+      latitudeDelta: position.latitudeDelta,
+      longitudeDelta: position.longitudeDelta,
+    });
+  };
+
   handleMapBtn = () => {
     this.getCurrentPositionCafeList();
   };
@@ -170,6 +188,8 @@ class Home extends Component {
       latitude,
       longitude,
       suggestCafeList,
+      latitudeDelta,
+      longitudeDelta,
     } = this.state;
 
     return (
@@ -216,6 +236,10 @@ class Home extends Component {
                 cafeList={cafeList}
                 currentLat={latitude}
                 currentLng={longitude}
+                currentLatDelta={latitudeDelta}
+                currentLngDelta={longitudeDelta}
+                handlePressMarker={this.handlePressMarker}
+                handleMapMove={this.handleMapMove}
               />
             </View>
 

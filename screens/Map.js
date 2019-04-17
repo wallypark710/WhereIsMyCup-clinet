@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 class Map extends Component {
+  state = {
+    latDelta: 0.0062,
+    lngDelta: 0.0021,
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -11,10 +16,13 @@ class Map extends Component {
           region={{
             latitude: this.props.currentLat,
             longitude: this.props.currentLng,
-            latitudeDelta: 0.0062,
-            longitudeDelta: 0.0021,
+            latitudeDelta: this.props.currentLatDelta,
+            longitudeDelta: this.props.currentLngDelta,
           }}
           style={styles.container}
+          onRegionChangeComplete={point => {
+            this.props.handleMapMove(point);
+          }}
         >
           {this.props.cafeList.map((ele, idx) => {
             return (
@@ -23,6 +31,10 @@ class Map extends Component {
                 coordinate={{
                   latitude: ele.location.lat,
                   longitude: ele.location.lng,
+                }}
+                title={ele.title}
+                onPress={() => {
+                  this.props.handlePressMarker(ele);
                 }}
               />
             );

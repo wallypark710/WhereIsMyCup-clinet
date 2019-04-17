@@ -42,8 +42,9 @@ class Intro_5 extends Component {
   };
 
   componentDidMount() {
-    this.props.navigation.setParams({ nextPage: this._nextPage.bind(this) });
-    this.props.navigation.setParams({ prePage: this._prePage.bind(this) });
+    const { navigation } = this.props;
+    navigation.setParams({ nextPage: this._nextPage.bind(this) });
+    navigation.setParams({ prePage: this._prePage.bind(this) });
   }
 
   _nextPage() {

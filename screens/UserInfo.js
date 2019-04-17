@@ -115,7 +115,7 @@ class UserInfo extends Component {
 
           <TouchableOpacity
             style={styles.btnEntry}
-            onPress={this.handleDeleteAccount.bind(this)}
+            onPress={this.handleDeleteAccount}
           >
             <Text style={styles.btnText}>Delete account</Text>
           </TouchableOpacity>
